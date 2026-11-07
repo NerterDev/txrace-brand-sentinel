@@ -1,29 +1,29 @@
 {
   "total_mentions_30d": 18,
-  "total_reach_estimated": 292120,
-  "viral_count": 6,
-  "buying_leads_count": 9,
+  "total_reach_estimated": 343389,
+  "viral_count": 7,
+  "buying_leads_count": 4,
   "sentiment_positive_pct": 100.0,
   "delta_mentions_pct": 18.4,
   "top_models": [
     {
       "model": "CR250",
-      "count": 6
+      "count": 8
     },
     {
       "model": "CR125",
-      "count": 3
+      "count": 4
     },
     {
-      "model": "KX250",
+      "model": "KX125",
       "count": 3
     },
     {
       "model": "YZ125",
-      "count": 2
+      "count": 1
     },
     {
-      "model": "CRF250X",
+      "model": "KX250",
       "count": 1
     }
   ],
@@ -41,27 +41,27 @@
       "count": 2
     },
     {
-      "platform": "reddit",
+      "platform": "marketplaces",
       "count": 2
     },
     {
-      "platform": "instagram",
+      "platform": "facebook",
       "count": 2
     }
   ],
   "top_intents": [
     {
-      "intent": "COMPRA_ATIVA",
-      "count": 9
+      "intent": "PROJETO_BUILD",
+      "count": 13
     },
     {
-      "intent": "PROJETO_BUILD",
-      "count": 7
+      "intent": "COMPRA_ATIVA",
+      "count": 4
     },
     {
       "intent": "DUVIDA_TECNICA",
-      "count": 2
+      "count": 1
     }
   ],
-  "last_updated": "2026-11-07T10:44:39.628021+00:00"
+  "last_updated": "2026-11-07T10:58:43.990407+00:00"
 }
