@@ -1,0 +1,57 @@
+version: "1.0"
+id: "TASK-007"
+title: "Suíte Completa de Testes Determinísticos e Selagem do Recibo Final (receipt-TASK-FINAL.json)"
+status: "closed"
+sealed: true
+closed_at: "2026-11-07T03:09:00+01:00"
+profile: "software"
+
+objective: >
+  Consolidar e certificar a conclusão integral do projeto TX RACE Brand Sentinel sob a governança
+  do AI Harness (Tier-S):
+  1. Executar a suíte completa de 61+ testes determinísticos unitários, contratuais e de integração.
+  2. Verificar a conformidade estrita com todos os contratos (.harness/contract.yaml, .harness/policy.yaml,
+     .harness/verification.yaml, .harness/invariants/ux_contract.yaml).
+  3. Gerar o recibo final auditável receipts/receipt-TASK-FINAL.json contendo a síntese de todas as evidências,
+     catálogo de fontes, métricas de qualidade e estado GitOps do projeto.
+  4. Atualizar DECISIONS.md (D049) e o estado global .harness/state.json para o estado de selagem final.
+
+source_of_truth:
+  contract: ".harness/contract.yaml"
+  policy: ".harness/policy.yaml"
+  verification: ".harness/verification.yaml"
+  ux_contract: ".harness/invariants/ux_contract.yaml"
+  receipt_final: "receipts/receipt-TASK-FINAL.json"
+
+data_trace:
+  ingress: "Verificação holística de todos os módulos de software, dados estáticos e testes do projeto"
+  validation: "Aprovação em 100% dos testes determinísticos com zero falhas e zero dependências de rede em testes"
+  state: "Geração de receipts/receipt-TASK-FINAL.json e transição de estado no .harness/state.json"
+  egress: "Repositório 100% pronto para publicação no GitHub e deploy no GitHub Pages"
+  root_cause: "Garantir a entrega profissional completa do radar de inteligência à NerterDev e à TX RACE"
+
+strict_schema:
+  schema_authority: "src/models/mention.py"
+  declared_interfaces:
+    - name: "FullTestSuite"
+      type: "unittest"
+      methods: ["discover() -> 61+ passing tests"]
+
+affected_files:
+  - "tasks/TASK-007.yaml"
+  - "receipts/receipt-TASK-FINAL.json"
+  - "DECISIONS.md"
+  - ".harness/state.json"
+
+verification_plan:
+  type: "comprehensive_deterministic_suite"
+  command: "python -m unittest discover -s tests -p 'test_*.py' -v"
+  evidence_required:
+    - "100% dos testes determinísticos passam com zero falhas e zero erros"
+    - "Todos os 6 recibos anteriores (TASK-001 a TASK-006) estão selados e consolidados"
+    - "Arquitetura Dark Theme e GitOps 4h comprovadas com evidências deterministicamente verificáveis"
+
+done_when:
+  - "A totalidade da suíte de testes passa com 100% de sucesso"
+  - "receipts/receipt-TASK-FINAL.json está gerado e selado com todas as evidências"
+  - ".harness/state.json regista o projeto como concluído com 0 falhas ativas"

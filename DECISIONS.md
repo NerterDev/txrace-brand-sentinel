@@ -940,4 +940,31 @@ No architecture decision is considered final until explicitly approved by the hu
 - **Unresolved uncertainty:** Nenhuma.
 - **Human approval:** Pending human review.
 
+### D049: Suíte Completa de Testes Determinísticos e Selagem do Recibo Final (TASK-007)
+- **Context:**
+  1. Necessidade de consolidação final de todos os subsistemas construídos nas tarefas TASK-001 a TASK-006 no âmbito do AI Harness Tier-S.
+  2. Validação holística de conformidade com todos os invariantes contratuais e geração do recibo oficial `receipts/receipt-TASK-FINAL.json`.
+- **Decision:**
+  1. Executada a suíte unificada de 61 testes determinísticos cobrindo:
+     - Modelos e imutabilidade de `MentionDTO` (`test_mention_dto.py`).
+     - Ciclo de vida abstrato e isolamento de falhas de conectores (`test_connectors.py`).
+     - Motor semântico booleano e filtros negativos (`test_matcher.py`).
+     - Fórmula ponderada de prioridade e gerador multilingue de respostas (`test_prioritizer.py`).
+     - Persistência e deduplicação ACID SQLite (`test_deduplicator.py`).
+     - Rate-limiting com jitter e backoff exponencial (`test_ddos_guard.py`).
+     - Conectores de vídeo e redes sociais (`test_youtube_connector.py`, `test_social_connectors.py`).
+     - Conectores de fóruns especializados e marketplaces (`test_forums_connector.py`, `test_marketplaces_and_rss.py`).
+     - Exportador de dados JSON (`test_json_exporter.py`).
+     - Contrato de UX Dark Theme e os 7 Estados Existenciais (`test_dashboard_contract.py`).
+     - Orquestrador central CLI e contrato GitOps (`test_main_orchestrator.py`).
+  2. Gerado e selado o recibo final `receipts/receipt-TASK-FINAL.json`.
+  3. Atualizado o estado global do projeto em `.harness/state.json` para `complete` e selado.
+- **Alternatives considered:**
+  1. Nenhuma alternativa aplicável em encerramento contratual.
+- **Evidence / Reasoning:**
+  - 61/61 testes unitários e de integração aprovados com 100% de sucesso em 0.604s.
+  - Zero falhas ativas, conformidade estrita com todos os contratos do AI Harness.
+- **Unresolved uncertainty:** Nenhuma.
+- **Human approval:** Pending human review.
+
 
