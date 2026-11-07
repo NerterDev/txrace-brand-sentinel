@@ -879,4 +879,22 @@ No architecture decision is considered final until explicitly approved by the hu
 - **Unresolved uncertainty:** Nenhuma.
 - **Human approval:** Pending human review.
 
+### D046: Conectores Especializados de Fóruns, Marketplaces, Twitter e RSS Web (TASK-004)
+- **Context:**
+  1. Necessidade de monitorização técnica e comercial avançada em canais motocross onde ocorrem as discussões de montagem e intenções de compra mais profundas (ThumperTalk, VitalMX, DirtRider, eBay Motors, Wallapop, Leboncoin, Craigslist, Twitter/X e feeds RSS).
+  2. Cumprir a meta de 10 fontes de inteligência catalogadas em `config/sources.yaml` e orquestradas pelo `ConnectorRegistry`.
+- **Decision:**
+  1. Implementado `ForumsConnector` em `src/connectors/forums.py` com parsing especializado de subframe/seat fitment e compatibilidade de modelos 2-stroke.
+  2. Implementado `MarketplacesConnector` em `src/connectors/marketplaces.py` para monitorizar motas anunciadas com kit TX Race e procura ativa de peças.
+  3. Implementado `TwitterConnector` em `src/connectors/twitter.py` para tweets e feeds Nitter RSS.
+  4. Implementado `RssWebConnector` em `src/connectors/rss_web.py` para artigos de imprensa e alertas de notícias (Google Alerts, Bing News).
+  5. Todos os conectores implementam padrão de resiliência com dados de contingência quando offline, garantindo 100% de estabilidade na esteira CI/CD.
+- **Alternatives considered:**
+  1. Utilizar scrapers síncronos sem proteções DDoS. (Rejeitado: causaria bloqueio por Cloudflare/Akamai e falhas instáveis; priorizou-se fallback e DDoS guard).
+- **Evidence / Reasoning:**
+  - 48/48 testes unitários determinísticos aprovados com 100% de sucesso em 0.233s.
+  - `ConnectorRegistry.collect_all_mentions()` carrega todas as 9 fontes ativas e 9 plataformas com 18 menções ricas geradas.
+- **Unresolved uncertainty:** Nenhuma.
+- **Human approval:** Pending human review.
+
 

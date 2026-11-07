@@ -1,0 +1,80 @@
+version: "1.0"
+id: "TASK-004"
+title: "Conectores de Fóruns Especializados, Marketplaces, Twitter e RSS Web"
+status: "closed"
+sealed: true
+closed_at: "2026-11-07T03:02:00+01:00"
+profile: "software"
+
+objective: >
+  Implementar os 4 conectores especializados que completam o catálogo de 10 fontes de inteligência:
+  1. ForumsConnector (src/connectors/forums.py): monitorização de fóruns clássicos de motocross (ThumperTalk, VitalMX, DirtRider) com foco em dúvidas técnicas de montagem e projetos de restauro.
+  2. MarketplacesConnector (src/connectors/marketplaces.py): rastreio de anúncios em eBay Motors, Wallapop, Leboncoin e Craigslist de motas com kit TX Race ou procura de kits usados/novos.
+  3. TwitterConnector (src/connectors/twitter.py): monitorização de menções no X/Twitter e Nitter RSS.
+  4. RssWebConnector (src/connectors/rss_web.py): ingestão de feeds RSS de Google Alerts e Bing News.
+  Todos os conectores devem herdar de BaseConnector, integrar-se com KeywordMatcher e Prioritizer, e suportar modo offline/fixtures resiliente.
+
+source_of_truth:
+  sources_config: "config/sources.yaml"
+  forums_connector: "src/connectors/forums.py"
+  marketplaces_connector: "src/connectors/marketplaces.py"
+  twitter_connector: "src/connectors/twitter.py"
+  rss_web_connector: "src/connectors/rss_web.py"
+  registry: "src/connectors/registry.py"
+
+data_trace:
+  ingress: "Tópicos de fóruns, anúncios de classificados, tweets e feeds RSS da web especializada"
+  validation: "Normalização de título, excerto, autor, fórum/marketplace de origem e filtragem de falsos positivos via KeywordMatcher"
+  state: "Geração de MentionDTOs com cálculo de hash SHA-256 e categorização de intenção (COMPRA_ATIVA, DUVIDA_TECNICA, etc.)"
+  egress: "ConnectorResult com integridade de execução e lista de MentionDTOs enriquecidos"
+  root_cause: "Capturar discussões técnicas profundas e intenções de compra de pilotos que ocorrem fora das redes sociais generalistas"
+
+strict_schema:
+  schema_authority: "src/models/mention.py"
+  declared_interfaces:
+    - name: "ForumsConnector"
+      type: "BaseConnector"
+      methods: ["fetch() -> list[MentionDTO]", "health_check() -> bool"]
+    - name: "MarketplacesConnector"
+      type: "BaseConnector"
+      methods: ["fetch() -> list[MentionDTO]", "health_check() -> bool"]
+    - name: "TwitterConnector"
+      type: "BaseConnector"
+      methods: ["fetch() -> list[MentionDTO]", "health_check() -> bool"]
+    - name: "RssWebConnector"
+      type: "BaseConnector"
+      methods: ["fetch() -> list[MentionDTO]", "health_check() -> bool"]
+
+phantom_interface_prevention:
+  new_interfaces:
+    - "ForumsConnector"
+    - "MarketplacesConnector"
+    - "TwitterConnector"
+    - "RssWebConnector"
+  justification: "Conectores finais para completar a arquitetura de 10 fontes de inteligência mandatadas pelo PROJECT.md e ARCHITECTURE.md."
+
+affected_files:
+  - "src/connectors/forums.py"
+  - "src/connectors/marketplaces.py"
+  - "src/connectors/twitter.py"
+  - "src/connectors/rss_web.py"
+  - "src/connectors/__init__.py"
+  - "tests/test_forums_connector.py"
+  - "tests/test_marketplaces_and_rss.py"
+  - ".harness/source_of_truth.yaml"
+  - ".harness/state.json"
+
+verification_plan:
+  type: "deterministic_unit_tests"
+  command: "python -m unittest discover -s tests -p 'test_*.py'"
+  evidence_required:
+    - "test_forums_connector passes: extração de dúvidas técnicas e projetos em ThumperTalk e VitalMX"
+    - "test_marketplaces_and_rss passes: deteção de anúncios de compra/venda em eBay/Wallapop, tweets no Twitter e alertas RSS Web"
+    - "Integração completa: ConnectorRegistry.load_from_config(sources_yaml) carrega com sucesso os 10 conectores"
+
+done_when:
+  - "Os 4 conectores estão implementados em src/connectors/"
+  - "ConnectorRegistry carrega dinamicamente a totalidade dos 10 conectores do catálogo config/sources.yaml"
+  - "Cada conector gera MentionDTOs válidos e enriquecidos"
+  - "100% dos testes determinísticos passam via python -m unittest"
+

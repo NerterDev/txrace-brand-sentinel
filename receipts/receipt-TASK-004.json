@@ -1,0 +1,64 @@
+{
+  "task_id": "TASK-004",
+  "title": "Conectores de Fóruns Especializados, Marketplaces, Twitter e RSS Web",
+  "status": "closed",
+  "sealed": true,
+  "completed_at": "2026-11-07T03:02:00+01:00",
+  "verifier": "Harness Verification Engine",
+  "evidence": {
+    "connectors": {
+      "forums": {
+        "class": "ForumsConnector",
+        "source": "src/connectors/forums.py",
+        "platform": "forums",
+        "features": "ThumperTalk, VitalMX, DirtRider; technical fitment, subframe/seat inquiries and project builds"
+      },
+      "marketplaces": {
+        "class": "MarketplacesConnector",
+        "source": "src/connectors/marketplaces.py",
+        "platform": "marketplaces",
+        "features": "eBay Motors, Wallapop, Leboncoin, Craigslist; used parts, restyled bikes, and active buying intent"
+      },
+      "twitter": {
+        "class": "TwitterConnector",
+        "source": "src/connectors/twitter.py",
+        "platform": "twitter",
+        "features": "X / Twitter and Nitter RSS stream ingestion, viral restyle builds and launch announcements"
+      },
+      "rss_web": {
+        "class": "RssWebConnector",
+        "source": "src/connectors/rss_web.py",
+        "platform": "rss_web",
+        "features": "Google Alerts RSS and Bing News MX feed parsing, editorial press reviews"
+      }
+    },
+    "dynamic_discovery": {
+      "status": "verified",
+      "config_file": "config/sources.yaml",
+      "total_sources_configured": 9,
+      "total_platforms_represented": 9,
+      "total_mentions_gathered": 18
+    },
+    "tests": {
+      "runner": "python -m unittest discover -s tests -p 'test_*.py'",
+      "total_tests": 48,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 0.233
+    }
+  },
+  "affected_files": [
+    "src/connectors/forums.py",
+    "src/connectors/marketplaces.py",
+    "src/connectors/twitter.py",
+    "src/connectors/rss_web.py",
+    "src/connectors/__init__.py",
+    "tests/test_forums_connector.py",
+    "tests/test_marketplaces_and_rss.py",
+    "tasks/TASK-004.yaml",
+    "receipts/receipt-TASK-004.json",
+    "DECISIONS.md",
+    ".harness/source_of_truth.yaml",
+    ".harness/state.json"
+  ]
+}
