@@ -40,7 +40,7 @@ class TestSocialConnectors(unittest.TestCase):
         self.assertGreater(len(mentions), 0)
         for m in mentions:
             self.assertEqual(m.platform, Platform.FACEBOOK)
-            self.assertTrue(m.url.startswith("https://www.facebook.com/groups/"))
+            self.assertTrue(m.url.startswith("https://www.facebook.com/"))
             self.assertIn(m.brand_detected, ["Kawasaki", "Honda"])
 
     def test_reddit_connector_fetch(self) -> None:

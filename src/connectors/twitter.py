@@ -30,17 +30,17 @@ class TwitterConnector(BaseConnector):
     def _get_fallback_fixtures(self) -> list[dict[str, Any]]:
         return [
             {
-                "id": "tw_cr125_tweet_01",
-                "author": "@2strokeDaily",
-                "author_url": "https://x.com/2strokeDaily",
-                "title": "TX Race Kit on 2002 CR125!",
-                "content": "Just saw this 2002 CR125 build running the full TX Race Gen25 restyle kit. "
-                           "2-strokes will never die. Where can I buy this in the UK? #txrace #cr125 #motocross",
+                "id": "tw_txrace_official_01",
+                "author": "@txrace",
+                "author_url": "https://x.com/txrace",
+                "title": "TX RACE™ Official on X: 2-Stroke Restyle Kits & Releases",
+                "content": "Official updates from TX RACE on X. Showcasing our Gen24 and Gen25 bolt-on restyle kits "
+                           "for Honda CR125/250 and Kawasaki KX models. 2-strokes will never die! #txrace #cr125 #cr250",
                 "url": "https://x.com/txrace",
                 "published_at": "2026-11-06T18:45:00Z",
                 "metrics": {"views": 16400, "comments": 22, "likes": 540, "shares": 68},
-                "geo_country": "United Kingdom",
-                "geo_city": "London",
+                "geo_country": "Spain",
+                "geo_city": "Pontevedra",
             },
         ]
 

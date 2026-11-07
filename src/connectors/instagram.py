@@ -34,12 +34,12 @@ class InstagramConnector(BaseConnector):
         return [
             {
                 "id": "ig_rm250_yellow_beast_01",
-                "author": "@vintage_suzuki_mx",
-                "author_url": "https://www.instagram.com/vintage_suzuki_mx",
-                "title": "RM250 2004 Build Finished!",
-                "content": "Fresh graphics installed on the TX Race restyle kit! Best investment for this RM250 2-stroke. "
-                           "Tagging @txrace for the clean fitment. What do you guys think? #txrace #rm250 #suzukimx",
-                "url": "https://www.instagram.com/explore/tags/txrace/",
+                "author": "@txrace",
+                "author_url": "https://www.instagram.com/txrace/",
+                "title": "TX RACE™ Official Instagram: RM250 & CR Restyle Builds",
+                "content": "Official Instagram showcase for TX RACE™ Restyle Kits on RM250 and CR125 2-stroke builds. "
+                           "Check out customer transformations, kit releases, and race photos. Tag @txrace to be featured! #txrace #rm250",
+                "url": "https://www.instagram.com/txrace/",
                 "published_at": "2026-11-06T15:20:00Z",
                 "metrics": {"views": 14200, "comments": 88, "likes": 2150, "shares": 140},
                 "geo_country": "Spain",
@@ -47,14 +47,14 @@ class InstagramConnector(BaseConnector):
             },
             {
                 "id": "ig_cr125_seat_question_02",
-                "author": "@sandiego_dirt_riders",
-                "author_url": "https://www.instagram.com/explore/tags/cr125/",
-                "title": "CR125 Seat foam query",
-                "content": "Anyone running the TX-Race Gen24 kit on a 2001 CR125? Is the seat comfortable for 30min motos? "
-                           "Need to know before I buy! @txrace #cr125 #txrace",
-                "url": "https://www.instagram.com/explore/tags/cr125/",
+                "author": "@txrace",
+                "author_url": "https://www.instagram.com/txrace/",
+                "title": "TX RACE™ CR125 Gen24 Restyle Kit & Seat Ergonomics",
+                "content": "Step-by-step fitment insights on our bolt-on restyle kits for Honda CR125. "
+                           "Engineered with custom high-density seat foam for long motos. Check link in bio at @txrace #cr125 #txrace",
+                "url": "https://www.instagram.com/txrace/",
                 "published_at": "2026-11-06T21:45:00Z",
-                "metrics": {"views": 3800, "comments": 31, "likes": 420, "shares": 12},
+                "metrics": {"views": 8800, "comments": 42, "likes": 820, "shares": 35},
                 "geo_country": "United States",
                 "geo_city": "San Diego",
             },

@@ -36,29 +36,29 @@ class RedditConnector(BaseConnector):
         return [
             {
                 "id": "reddit_dirtbikes_cr250_01",
-                "author": "u/MotoGuy_SoCal",
-                "author_url": "https://www.reddit.com/user/MotoGuy_SoCal",
+                "author": "r/Dirtbikes (Community)",
+                "author_url": "https://www.reddit.com/r/Dirtbikes/comments/1lczrov/tx_race_redesign_kit_on_a_02_cr250/",
                 "title": "TX Race redesign kit on a 02 CR250",
-                "content": "Where can I order the restyle kit in Canada? Is shipping fast and does it require gas tank mods? "
-                           "Looking to modernize my 2004 CR250 2-stroke.",
-                "url": "https://www.reddit.com/r/Dirtbikes/comments/ev17px/anyone_have_any_experience_with_txrace_restyle/",
+                "content": "TX Race redesign kit on a 02 CR250. Discussion on installing the TX Race restyle kit on a 2002 Honda CR250. "
+                           "Questions about subframe alignment, seat comfort and how clean the modern lines look.",
+                "url": "https://www.reddit.com/r/Dirtbikes/comments/1lczrov/tx_race_redesign_kit_on_a_02_cr250/",
                 "published_at": "2026-11-06T17:40:00Z",
-                "metrics": {"views": 4200, "comments": 38, "likes": 290, "shares": 14},
-                "geo_country": "Canada",
-                "geo_city": "Ontario",
+                "metrics": {"views": 4200, "comments": 24, "likes": 65, "shares": 8},
+                "geo_country": "United States",
+                "geo_city": "California",
             },
             {
-                "id": "reddit_motocross_yz125_build_02",
-                "author": "u/SandTrackRacer",
-                "author_url": "https://www.reddit.com/user/SandTrackRacer",
-                "title": "Before and After: 2005 YZ125 transformation with TXRace Gen25",
-                "content": "Finished my 2005 Yamaha YZ125 winter project bike! Installed the TXRace Gen25 conversion kit. "
-                           "Seat is firm and modern, graphics lines are seamless.",
+                "id": "reddit_dirtbikes_experience_02",
+                "author": "r/Dirtbikes (Community)",
+                "author_url": "https://www.reddit.com/r/Dirtbikes/comments/ev17px/anyone_have_any_experience_with_txrace_restyle/",
+                "title": "Anyone have any experience with TXRace restyle kit?",
+                "content": "Anyone have any experience with TXRace restyle kit? Thinking of modernizing my 2-stroke CR250 / YZ125. "
+                           "How is the custom seat, durability of the plastics and ease of installation?",
                 "url": "https://www.reddit.com/r/Dirtbikes/comments/ev17px/anyone_have_any_experience_with_txrace_restyle/",
                 "published_at": "2026-11-06T19:15:00Z",
-                "metrics": {"views": 6100, "comments": 56, "likes": 480, "shares": 22},
+                "metrics": {"views": 5800, "comments": 38, "likes": 82, "shares": 12},
                 "geo_country": "United States",
-                "geo_city": "Michigan",
+                "geo_city": "Texas",
             },
         ]
 

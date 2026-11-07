@@ -31,9 +31,9 @@ class TikTokConnector(BaseConnector):
         return [
             {
                 "id": "tt_cr250_transformation_01",
-                "author": "@braapp_nation",
-                "author_url": "https://www.tiktok.com/@braapp_nation",
-                "title": "2002 CR250 build with TX Race Gen25 kit 🔥",
+                "author": "@txrace",
+                "author_url": "https://www.tiktok.com/@txrace",
+                "title": "TX RACE™ CR250 Gen25 Restyle Build Transformation",
                 "content": "From clapped out 2002 to 2025 modern weapon! TX Race restyle kit completely changed this bike #txrace #cr250 #2stroke #dirtbike",
                 "url": "https://www.tiktok.com/@txrace",
                 "published_at": "2026-11-05T20:15:00Z",
@@ -43,10 +43,10 @@ class TikTokConnector(BaseConnector):
             },
             {
                 "id": "tt_yz125_rebuild_02",
-                "author": "@motos_mx_pt",
+                "author": "@txrace",
                 "author_url": "https://www.tiktok.com/@txrace",
-                "title": "Yamaha YZ125 com kit TX-Race",
-                "content": "A perguntar onde comprar este kit TX Race para YZ125 e preço do envio para Portugal! #txrace #yz125 #ondecomprar",
+                "title": "TX RACE™ YZ125 & CR Restyle Kits Worldwide Shipping",
+                "content": "Worldwide shipping available for all TX Race restyle kits! Bolt-on modern transformation for Yamaha YZ and Honda CR 2-strokes #txrace #yz125 #dirtbike",
                 "url": "https://www.tiktok.com/@txrace",
                 "published_at": "2026-11-06T19:00:00Z",
                 "metrics": {"views": 18500, "comments": 142, "likes": 1950, "shares": 180},

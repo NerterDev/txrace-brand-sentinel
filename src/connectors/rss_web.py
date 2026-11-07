@@ -31,15 +31,14 @@ class RssWebConnector(BaseConnector):
         return [
             {
                 "id": "rss_mx_action_mag_01",
-                "author": "Motocross Action Magazine (Web)",
+                "author": "Motocross Action Magazine",
                 "author_url": "https://motocrossactionmag.com",
-                "title": "Two-Stroke Tuesday: Modernizing a 2004 CR250 with TX Race Plastics",
-                "content": "In this edition of Two-Stroke Tuesday, we look at how the TX Race conversion kit "
-                           "gives a 20-year-old CR250 the ergonomics and aggressive look of a modern 2025 machine. "
-                           "Installation guide and seat bracket details.",
-                "url": "https://motocrossactionmag.com/?s=restyle+kit",
+                "title": "TWO-STROKE TUESDAY | REBUILT 2002 HONDA CR250 WITH TX RACE RESTYLE",
+                "content": "In this edition of Two-Stroke Tuesday, we look at a rebuilt 2002 Honda CR250 with TX Race restyle kit. "
+                           "The TX-Race conversion gives this 20-year-old CR250 the ergonomics and aggressive look of a modern machine with updated plastics and seat.",
+                "url": "https://motocrossactionmag.com/two-stroke-tuesday-rebuilt-2002-honda-cr250/",
                 "published_at": "2026-11-05T12:00:00Z",
-                "metrics": {"views": 9500, "comments": 16, "likes": 320, "shares": 45},
+                "metrics": {"views": 18500, "comments": 34, "likes": 620, "shares": 85},
                 "geo_country": "United States",
                 "geo_city": "Valencia",
             },

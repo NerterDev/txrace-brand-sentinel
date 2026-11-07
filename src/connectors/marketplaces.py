@@ -33,29 +33,29 @@ class MarketplacesConnector(BaseConnector):
         return [
             {
                 "id": "mkt_ebay_cr250_listing_01",
-                "author": "VintageMotoParts_USA",
-                "author_url": "https://www.ebay.com/usr/vintagemotoparts_usa",
-                "title": "TX Race Restyle Conversion Kit for Honda CR250 2002-2007 (New in Box)",
-                "content": "Brand new TX Race restyle kit in original packaging. Includes front fender, side panels, "
-                           "rear fender, airbox brackets and seat foam. Where can I buy graphics? Template included. Price $450.",
+                "author": "eBay Motors",
+                "author_url": "https://www.ebay.com/sch/i.html?_nkw=tx+race+restyle+kit",
+                "title": "TX Race Restyle Kit for Honda CR250 — eBay Motors Listing",
+                "content": "Brand new TX Race restyle kit for Honda CR250 2002-2007. "
+                           "Where to buy? Price $450 with fast shipping. Complete plastics and seat in stock.",
                 "url": "https://www.ebay.com/sch/i.html?_nkw=tx+race+restyle+kit",
                 "published_at": "2026-11-06T11:00:00Z",
-                "metrics": {"views": 1850, "comments": 12, "likes": 48, "shares": 5},
+                "metrics": {"views": 4500, "comments": 14, "likes": 95, "shares": 12},
                 "geo_country": "United States",
                 "geo_city": "Chicago",
             },
             {
-                "id": "mkt_wallapop_kx250_spain_02",
-                "author": "Carlos_MX_BCN",
-                "author_url": "https://es.wallapop.com/search?keywords=tx+race",
-                "title": "Kawasaki KX250 2003 con kit TX Race Restyle montado",
-                "content": "Vendo KX250 2T en perfecto estado con kit TX Race recién instalado. Precio 3.200€. "
-                           "Comprado directamente en tienda oficial TX Race. Se puede ver y probar.",
-                "url": "https://es.wallapop.com/search?keywords=tx+race",
+                "id": "mkt_txrace_store_kx250_02",
+                "author": "TX RACE Store",
+                "author_url": "https://www.txrace.com/shop/",
+                "title": "TX RACE™ Official Store: Restyle Kit for Kawasaki KX250",
+                "content": "Official product listing for TX RACE™ Restyle Kit for Kawasaki KX250 2003-2008. "
+                           "Price €480 with worldwide shipping. Where to buy direct from factory with full kit in stock.",
+                "url": "https://www.txrace.com/product/tx-race-restyle-kit-for-kawasaki-kx125-250-2003-2008/",
                 "published_at": "2026-11-06T16:20:00Z",
-                "metrics": {"views": 920, "comments": 15, "likes": 34, "shares": 4},
+                "metrics": {"views": 9400, "comments": 12, "likes": 310, "shares": 42},
                 "geo_country": "Spain",
-                "geo_city": "Barcelona",
+                "geo_city": "Pontevedra",
             },
         ]
 

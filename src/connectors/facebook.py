@@ -30,29 +30,30 @@ class FacebookConnector(BaseConnector):
     def _get_fallback_fixtures(self) -> list[dict[str, Any]]:
         return [
             {
-                "id": "fb_kx_gang_group_01",
-                "author": "KX 2-Stroke Gang (Group)",
-                "author_url": "https://www.facebook.com/groups/kx2strokegang",
-                "title": "Anyone tried TX Race on 97 KX250?",
-                "content": "Hey guys, looking to rebuild my 1997 KX250. Is the seat foam comfortable for long motos? "
-                           "Also does the TX-Race kit bolt right on or need bracket mods?",
-                "url": "https://www.facebook.com/groups/kx2strokegang/",
+                "id": "fb_txrace_kx250_official_01",
+                "author": "TX RACE Official (@txracecom)",
+                "author_url": "https://www.facebook.com/txracecom",
+                "title": "TX RACE™ Restyle Kits for Kawasaki KX250 & KX125",
+                "content": "Official updates from TX RACE on restyle kits for Kawasaki KX250 and KX125. "
+                           "Bolt-on conversion, custom seat foam, and modern racing aesthetics.",
+                "url": "https://www.facebook.com/txracecom",
                 "published_at": "2026-11-06T18:00:00Z",
-                "metrics": {"views": 2400, "comments": 42, "likes": 115, "shares": 8},
-                "geo_country": "United States",
-                "geo_city": "Austin",
+                "metrics": {"views": 4400, "comments": 38, "likes": 215, "shares": 18},
+                "geo_country": "Spain",
+                "geo_city": "Pontevedra",
             },
             {
-                "id": "fb_honda_cr_owners_02",
-                "author": "Honda CR 2-Stroke Riders EU",
-                "author_url": "https://www.facebook.com/txrace/",
-                "title": "TX Race Kit CR250 Gen25 In Stock?",
-                "content": "Where can I buy the TX Race restyle kit in Europe? What is the delivery time and price with tax included?",
-                "url": "https://www.facebook.com/groups/hondacr2stroke/",
+                "id": "fb_txrace_cr250_official_02",
+                "author": "TX RACE Official (@txracecom)",
+                "author_url": "https://www.facebook.com/txracecom",
+                "title": "TX RACE™ Gen25 Restyle Kit for Honda CR250 Available Worldwide",
+                "content": "Where to buy the TX Race restyle kit in Europe and worldwide. "
+                           "Fast international shipping with step-by-step fitment guide for Honda CR250.",
+                "url": "https://www.facebook.com/txracecom",
                 "published_at": "2026-11-06T20:30:00Z",
-                "metrics": {"views": 1800, "comments": 28, "likes": 64, "shares": 5},
-                "geo_country": "France",
-                "geo_city": "Lyon",
+                "metrics": {"views": 3800, "comments": 28, "likes": 164, "shares": 15},
+                "geo_country": "Spain",
+                "geo_city": "Pontevedra",
             },
         ]
 
