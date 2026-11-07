@@ -16,11 +16,6 @@
       "reach": 4100
     },
     {
-      "date": "2025-01-21",
-      "count": 1,
-      "reach": 1800
-    },
-    {
       "date": "2025-05-02",
       "count": 1,
       "reach": 4850
@@ -34,11 +29,6 @@
       "date": "2026-04-23",
       "count": 1,
       "reach": 2650
-    },
-    {
-      "date": "2026-06-05",
-      "count": 1,
-      "reach": 1800
     },
     {
       "date": "2026-08-14",
@@ -144,120 +134,115 @@
       "date": "2026-11-02",
       "count": 1,
       "reach": 9986
-    },
-    {
-      "date": "2026-11-07",
-      "count": 4,
-      "reach": 31346
     }
   ],
   "model_share": [
     {
       "model": "CR125",
-      "count": 11,
-      "percentage": 32.4
+      "count": 9,
+      "percentage": 32.1
     },
     {
       "model": "CR250",
-      "count": 8,
-      "percentage": 23.5
+      "count": 7,
+      "percentage": 25.0
     },
     {
       "model": "KX250",
-      "count": 6,
-      "percentage": 17.6
+      "count": 4,
+      "percentage": 14.3
     },
     {
       "model": "KX125",
       "count": 3,
-      "percentage": 8.8
+      "percentage": 10.7
     },
     {
       "model": "CRF250R",
       "count": 3,
-      "percentage": 8.8
+      "percentage": 10.7
     },
     {
       "model": "CRF450R",
-      "count": 3,
-      "percentage": 8.8
+      "count": 2,
+      "percentage": 7.1
     }
   ],
   "platform_distribution": [
     {
       "platform": "youtube",
-      "count": 16,
-      "percentage": 47.1
+      "count": 12,
+      "percentage": 42.9
     },
     {
       "platform": "reddit",
-      "count": 9,
-      "percentage": 26.5
+      "count": 7,
+      "percentage": 25.0
     },
     {
       "platform": "marketplaces",
       "count": 4,
-      "percentage": 11.8
+      "percentage": 14.3
     },
     {
       "platform": "rss_web",
       "count": 3,
-      "percentage": 8.8
+      "percentage": 10.7
     },
     {
       "platform": "forums",
       "count": 2,
-      "percentage": 5.9
+      "percentage": 7.1
     }
   ],
   "intent_distribution": [
     {
       "intent": "PROJETO_BUILD",
-      "count": 19,
-      "percentage": 55.9
+      "count": 15,
+      "percentage": 53.6
     },
     {
       "intent": "COMPRA_ATIVA",
       "count": 8,
-      "percentage": 23.5
+      "percentage": 28.6
     },
     {
       "intent": "DUVIDA_TECNICA",
       "count": 4,
-      "percentage": 11.8
+      "percentage": 14.3
     },
     {
       "intent": "GERAL",
-      "count": 3,
-      "percentage": 8.8
+      "count": 1,
+      "percentage": 3.6
     }
   ],
   "geo_distribution": [
     {
       "country": "United States",
-      "count": 25,
-      "percentage": 73.5
+      "count": 23,
+      "percentage": 82.1
     },
     {
       "country": "Australia",
       "count": 2,
-      "percentage": 5.9
+      "percentage": 7.1
     },
     {
       "country": "Portugal",
       "count": 1,
-      "percentage": 2.9
+      "percentage": 3.6
     },
     {
       "country": "Spain",
       "count": 1,
-      "percentage": 2.9
+      "percentage": 3.6
     },
     {
       "country": "France",
       "count": 1,
-      "percentage": 2.9
+      "percentage": 3.6
     }
   ],
-  "generated_at": "2026-11-07T12:35:38.079034+00:00"
+  "generated_at": "2026-11-07T12:39:32.721387+00:00"
 }

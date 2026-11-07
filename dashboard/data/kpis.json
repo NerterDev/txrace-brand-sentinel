@@ -1,22 +1,22 @@
 {
-  "total_mentions_30d": 34,
-  "total_reach_estimated": 365169,
-  "viral_count": 10,
+  "total_mentions_30d": 28,
+  "total_reach_estimated": 330223,
+  "viral_count": 9,
   "buying_leads_count": 8,
   "sentiment_positive_pct": 100.0,
   "delta_mentions_pct": 18.4,
   "top_models": [
     {
       "model": "CR125",
-      "count": 11
+      "count": 9
     },
     {
       "model": "CR250",
-      "count": 8
+      "count": 7
     },
     {
       "model": "KX250",
-      "count": 6
+      "count": 4
     },
     {
       "model": "KX125",
@@ -30,11 +30,11 @@
   "top_platforms": [
     {
       "platform": "youtube",
-      "count": 16
+      "count": 12
     },
     {
       "platform": "reddit",
-      "count": 9
+      "count": 7
     },
     {
       "platform": "marketplaces",
@@ -52,7 +52,7 @@
   "top_intents": [
     {
       "intent": "PROJETO_BUILD",
-      "count": 19
+      "count": 15
     },
     {
       "intent": "COMPRA_ATIVA",
@@ -64,8 +64,8 @@
     },
     {
       "intent": "GERAL",
-      "count": 3
+      "count": 1
     }
   ],
-  "last_updated": "2026-11-07T12:35:38.079034+00:00"
+  "last_updated": "2026-11-07T12:39:32.720968+00:00"
 }
