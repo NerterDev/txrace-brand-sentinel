@@ -1,0 +1,92 @@
+version: "1.0"
+id: "TASK-005"
+title: "Desenvolvimento do Painel Web SPA de Alta Densidade (GitHub Pages) e JsonExporter"
+status: "closed"
+sealed: true
+closed_at: "2026-11-07T03:06:00+01:00"
+profile: "software"
+
+objective: >
+  Desenvolver a Single Page Application (SPA) em Dark Theme de alta densidade servida no GitHub Pages
+  (dashboard/index.html, dashboard/styles.css, dashboard/app.js) e o motor de exportação de dados
+  (src/dispatchers/json_exporter.py). O painel deve cumprir rigorosamente o contrato de UX do Harness
+  (.harness/invariants/ux_contract.yaml), integrando:
+  1. Header de telemetria com status em tempo real do runner e ação primária única (Forçar Varredura).
+  2. Ribbon de 5 KPIs com tabular-nums (Total menções 30D, Alcance estimado, Vídeos virais, Leads de compra, Sentimento positivo).
+  3. Barra de filtros multidimensional em tempo real (plataforma, modelo, geração, intenção, país, pesquisa textual).
+  4. 4 Modos de visualização via abas: Cartões Ricos (Cards View), Tabela Densa (Data Table View), Gráficos & Analytics (Analytics View com SVGs nativos), e Gaveta Lateral Forense (ForensicDrawer).
+  5. Dossiê Forense com texto integral, tradução para Português, resumo de intenção por IA e resposta recomendada com cópia em 1 clique.
+  6. Cumprimento rigoroso dos 7 Estados Existenciais (EMPTY, LOADING, POPULATED, ZERO_RESULTS, PARTIAL_DEGRADED, ERROR com retry, SUCCESS_FEEDBACK com toast de 3-5s).
+  7. JsonExporter em src/dispatchers/json_exporter.py gerando current_mentions.json, kpis.json e analytics.json em dashboard/data/.
+
+source_of_truth:
+  dashboard_html: "dashboard/index.html"
+  dashboard_css: "dashboard/styles.css"
+  dashboard_js: "dashboard/app.js"
+  json_exporter: "src/dispatchers/json_exporter.py"
+  ux_contract: ".harness/invariants/ux_contract.yaml"
+  ux_master: "UX.md"
+
+data_trace:
+  ingress: "MentionDTOs enriquecidos produzidos pelos 10 conectores e processados pelo motor semântico"
+  validation: "Validação de esquema estrito em JsonExporter e carregamento assíncrono com tratamento de erro em app.js"
+  state: "Geração de dashboard/data/current_mentions.json, kpis.json e analytics.json e reatividade local no cliente"
+  egress: "Interface SPA Dark Theme renderizada no navegador e exportação para CSV/JSON"
+  root_cause: "Disponibilizar aos gestores e equipa comercial da TX RACE uma central de inteligência acionável e instantânea"
+
+strict_schema:
+  schema_authority: "src/models/mention.py"
+  declared_interfaces:
+    - name: "JsonExporter"
+      type: "class"
+      methods: ["export_all(mentions, output_dir) -> dict[str, str]", "build_kpis(mentions) -> dict", "build_analytics(mentions) -> dict"]
+
+ux_contract_compliance:
+  existential_states:
+    EMPTY: "Container #emptyState com ilustração amigável e botão CTA de varredura"
+    LOADING: "Skeleton cards #loadingState e spinner no botão primário com Zero Layout Shift"
+    POPULATED: "Grid responsivo 3 colunas de cartões, tabela densa com paginação e gráficos SVG"
+    ZERO_RESULTS: "Mensagem explícita com botão 'Limpar Filtros'"
+    PARTIAL_DEGRADED: "Alerta de degradação parcial caso um arquivo json falhe"
+    ERROR: "Banner de erro com explicação humana e botão 'Tentar Novamente' (Retry)"
+    SUCCESS_FEEDBACK: "Toast flutuante no canto superior/inferior direito com auto-dismiss em 3s"
+  action_hierarchy:
+    primary_cta: "Estritamente 1 botão com classe .btn-primary por contexto visual (#btnRefresh)"
+    secondary_actions: "Botões de filtro, exportação e abas com estilos outline/ghost (.btn-secondary)"
+    destructive_actions: "Isoladas e protegidas se aplicável"
+  behavioral_predictability:
+    dismiss_on_escape: "A tecla Escape fecha imediatamente a ForensicDrawer e qualquer modal aberto"
+    cancel_is_noop: "Cancelar não grava nem emite mutação"
+    tabular_nums: "font-variant-numeric: tabular-nums em todos os números de KPIs e tabelas"
+    icons: "SVGs monocromáticos com currentColor, zero emojis em botões de ação funcional"
+  modular_scale: [0, 4, 8, 12, 16, 24, 32, 48, 64]
+
+affected_files:
+  - "src/dispatchers/json_exporter.py"
+  - "src/dispatchers/__init__.py"
+  - "dashboard/index.html"
+  - "dashboard/styles.css"
+  - "dashboard/app.js"
+  - "dashboard/data/current_mentions.json"
+  - "dashboard/data/kpis.json"
+  - "dashboard/data/analytics.json"
+  - "tests/test_json_exporter.py"
+  - "tests/test_dashboard_contract.py"
+  - ".harness/source_of_truth.yaml"
+  - ".harness/state.json"
+
+verification_plan:
+  type: "deterministic_unit_and_contract_tests"
+  command: "python -m unittest discover -s tests -p 'test_*.py'"
+  evidence_required:
+    - "test_json_exporter passes: current_mentions.json, kpis.json, analytics.json gerados com cálculo rigoroso de métricas"
+    - "test_dashboard_contract passes: verificação estática do index.html, CSS tokens Dark Theme, 7 estados existenciais, conformidade com UX Contract (Zero Emojis funcionais, Tabular Nums, Escape key)"
+    - "100% dos testes determinísticos passam"
+
+done_when:
+  - "src/dispatchers/json_exporter.py implementa a exportação completa de dados com consolidação de KPIs e séries temporais"
+  - "dashboard/index.html, dashboard/styles.css e dashboard/app.js implementam as 4 vistas completas (Cards, Tabela, Analytics, ForensicDrawer)"
+  - "Os 7 Estados Existenciais estão implementados e verificáveis na interface"
+  - "O ForensicDrawer suporta leitura integral, tradução em PT e cópia em 1 clique da resposta recomendada"
+  - "Ficheiros de dados iniciais são gerados em dashboard/data/ a partir dos conectores"
+  - "Testes determinísticos em tests/test_json_exporter.py e tests/test_dashboard_contract.py passam com 100% de sucesso"

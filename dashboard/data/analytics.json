@@ -1,0 +1,158 @@
+{
+  "timeline_30d": [
+    {
+      "date": "2026-11-04",
+      "count": 1,
+      "reach": 54200
+    },
+    {
+      "date": "2026-11-05",
+      "count": 3,
+      "reach": 146300
+    },
+    {
+      "date": "2026-11-06",
+      "count": 14,
+      "reach": 91620
+    }
+  ],
+  "model_share": [
+    {
+      "model": "CR250",
+      "count": 6,
+      "percentage": 33.3
+    },
+    {
+      "model": "CR125",
+      "count": 3,
+      "percentage": 16.7
+    },
+    {
+      "model": "KX250",
+      "count": 3,
+      "percentage": 16.7
+    },
+    {
+      "model": "YZ125",
+      "count": 2,
+      "percentage": 11.1
+    },
+    {
+      "model": "CRF250X",
+      "count": 1,
+      "percentage": 5.6
+    },
+    {
+      "model": "KX125",
+      "count": 1,
+      "percentage": 5.6
+    },
+    {
+      "model": "RM250",
+      "count": 1,
+      "percentage": 5.6
+    },
+    {
+      "model": "YZ250",
+      "count": 1,
+      "percentage": 5.6
+    }
+  ],
+  "platform_distribution": [
+    {
+      "platform": "youtube",
+      "count": 3,
+      "percentage": 16.7
+    },
+    {
+      "platform": "forums",
+      "count": 3,
+      "percentage": 16.7
+    },
+    {
+      "platform": "tiktok",
+      "count": 2,
+      "percentage": 11.1
+    },
+    {
+      "platform": "reddit",
+      "count": 2,
+      "percentage": 11.1
+    },
+    {
+      "platform": "instagram",
+      "count": 2,
+      "percentage": 11.1
+    },
+    {
+      "platform": "marketplaces",
+      "count": 2,
+      "percentage": 11.1
+    },
+    {
+      "platform": "facebook",
+      "count": 2,
+      "percentage": 11.1
+    },
+    {
+      "platform": "twitter",
+      "count": 1,
+      "percentage": 5.6
+    },
+    {
+      "platform": "rss_web",
+      "count": 1,
+      "percentage": 5.6
+    }
+  ],
+  "intent_distribution": [
+    {
+      "intent": "COMPRA_ATIVA",
+      "count": 9,
+      "percentage": 50.0
+    },
+    {
+      "intent": "PROJETO_BUILD",
+      "count": 7,
+      "percentage": 38.9
+    },
+    {
+      "intent": "DUVIDA_TECNICA",
+      "count": 2,
+      "percentage": 11.1
+    }
+  ],
+  "geo_distribution": [
+    {
+      "country": "United States",
+      "count": 10,
+      "percentage": 55.6
+    },
+    {
+      "country": "Portugal",
+      "count": 2,
+      "percentage": 11.1
+    },
+    {
+      "country": "Canada",
+      "count": 2,
+      "percentage": 11.1
+    },
+    {
+      "country": "Spain",
+      "count": 2,
+      "percentage": 11.1
+    },
+    {
+      "country": "United Kingdom",
+      "count": 1,
+      "percentage": 5.6
+    },
+    {
+      "country": "France",
+      "count": 1,
+      "percentage": 5.6
+    }
+  ],
+  "generated_at": "2026-11-07T02:03:10.125386+00:00"
+}

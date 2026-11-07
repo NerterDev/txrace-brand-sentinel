@@ -1,0 +1,71 @@
+{
+  "task_id": "TASK-005",
+  "title": "Desenvolvimento do Painel Web SPA de Alta Densidade (GitHub Pages) e JsonExporter",
+  "status": "closed",
+  "sealed": true,
+  "completed_at": "2026-11-07T03:06:00+01:00",
+  "verifier": "Harness Verification Engine",
+  "evidence": {
+    "dashboard_spa": {
+      "html": "dashboard/index.html",
+      "css": "dashboard/styles.css",
+      "js": "dashboard/app.js",
+      "views": [
+        "Cards View (Cartões Ricos 3 colunas)",
+        "Data Table View (Tabela Densa com ordenação e exportação)",
+        "Analytics View (Gráficos SVG nativos de timeline 30D, model share e canais)",
+        "ForensicDrawer (Dossiê lateral com tradução PT e cópia em 1 clique)"
+      ]
+    },
+    "ux_contract_compliance": {
+      "7_existential_states": {
+        "EMPTY": "Container #emptyState com CTA para varredura imediata",
+        "LOADING": "Skeleton cards #loadingState e Zero Layout Shift no botão primário",
+        "POPULATED": "Container #populatedState com grid de cartões, tabela e gráficos",
+        "ZERO_RESULTS": "Container #zeroResultsState com botão 'Limpar Todos os Filtros'",
+        "PARTIAL_DEGRADED": "Banner #partialDegradedBanner com alerta informativo e dispensa",
+        "ERROR": "Container #errorState com explicação humana e botão 'Tentar Novamente'",
+        "SUCCESS_FEEDBACK": "Toast flutuante #toastContainer com animação e auto-dismiss em 3s"
+      },
+      "action_hierarchy": "Strictly 1 Primary CTA in header context (#btnRefresh com .btn-primary)",
+      "behavioral_predictability": "A tecla Escape fecha imediatamente o ForensicDrawer; cancelar é no-op",
+      "typography": "font-variant-numeric: tabular-nums e font-feature-settings: 'tnum' em todas as métricas",
+      "icons": "Monocromáticos via currentColor; zero emojis em botões funcionais",
+      "dark_theme_tokens": "#0B0F17 (Canvas), #111827 (Surface), #1F2937 (Elevation)"
+    },
+    "dispatcher": {
+      "class": "JsonExporter",
+      "source": "src/dispatchers/json_exporter.py",
+      "files_generated": [
+        "dashboard/data/current_mentions.json",
+        "dashboard/data/kpis.json",
+        "dashboard/data/analytics.json"
+      ],
+      "total_mentions_seeded": 18
+    },
+    "tests": {
+      "runner": "python -m unittest discover -s tests -p 'test_*.py'",
+      "total_tests": 57,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 0.308
+    }
+  },
+  "affected_files": [
+    "src/dispatchers/json_exporter.py",
+    "src/dispatchers/__init__.py",
+    "dashboard/index.html",
+    "dashboard/styles.css",
+    "dashboard/app.js",
+    "dashboard/data/current_mentions.json",
+    "dashboard/data/kpis.json",
+    "dashboard/data/analytics.json",
+    "tests/test_json_exporter.py",
+    "tests/test_dashboard_contract.py",
+    "tasks/TASK-005.yaml",
+    "receipts/receipt-TASK-005.json",
+    "DECISIONS.md",
+    ".harness/source_of_truth.yaml",
+    ".harness/state.json"
+  ]
+}

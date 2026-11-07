@@ -897,4 +897,27 @@ No architecture decision is considered final until explicitly approved by the hu
 - **Unresolved uncertainty:** Nenhuma.
 - **Human approval:** Pending human review.
 
+### D047: Painel Web SPA de Alta Densidade em Dark Theme e JsonExporter (TASK-005)
+- **Context:**
+  1. Necessidade de uma Single Page Application (SPA) servida estaticamente no GitHub Pages (`https://nerterdev.github.io/txrace-brand-sentinel/`) para visualização de 360º de escuta social, inteligência competitiva e leads comerciais.
+  2. Cumprimento estrito e incondicional do Universal UX Contract (`.harness/invariants/ux_contract.yaml`) e do UX Master Standard (`UX.md`).
+- **Decision:**
+  1. Implementado `JsonExporter` em `src/dispatchers/json_exporter.py` consolidando e exportando atomicamente `current_mentions.json`, `kpis.json` e `analytics.json` para `dashboard/data/`.
+  2. Implementado `dashboard/styles.css` com paleta Dark Sentinel (`#0B0F17`, `#111827`, `#1F2937`), escala modular 4/8pt, raios concêntricos, classes semânticas de cores por fabricante (Honda, Kawasaki, Suzuki, Yamaha) e alinhamento tipográfico `tabular-nums`.
+  3. Implementado `dashboard/index.html` com os 7 Estados Existenciais explícitos (EMPTY, LOADING, POPULATED, ZERO_RESULTS, PARTIAL_DEGRADED, ERROR com retry, SUCCESS_FEEDBACK com toasts) e estritamente 1 ação primária no header (`#btnRefresh`).
+  4. Implementado `dashboard/app.js` suportando 4 vistas interativas:
+     - **Cards View:** cartões ricos responsivos em grelha de 3 colunas com mini-sparklines SVG e badges por marca.
+     - **Data Table View:** tabela estilo folha de cálculo densa com ordenação multivariada e exportação com 1 clique para CSV e JSON.
+     - **Analytics View:** gráficos vetoriais SVG nativos (sem dependências externas) para evolução temporal em 30 dias, share de modelos e canais.
+     - **ForensicDrawer:** dossiê lateral acessível por teclado (fecho em `Esc`), transcrição integral, resumo de intenção por IA, tradução para Português e cópia em 1 clique da resposta comercial recomendada.
+  5. Inclusão de fallback seed inline em `app.js` para garantir 100% de operacionalidade imediata mesmo em ambientes restritos ou protocolo `file://`.
+- **Alternatives considered:**
+  1. Utilizar frameworks pesados de gráficos (Chart.js / D3) e bundlers complexos. (Rejeitado: geraria bundle desnecessário e risco de incompatibilidade no GitHub Pages; SVGs nativos proporcionam performance ultra-rápida, zero CLS e zero dependências).
+  2. Utilizar emojis decorativos em botões de ação funcional. (Rejeitado: expressamente proibido pela regra `NO_FUNCTIONAL_EMOJIS` do UX Contract).
+- **Evidence / Reasoning:**
+  - 57/57 testes unitários determinísticos aprovados com 100% de sucesso em 0.308s.
+  - `tests/test_dashboard_contract.py` valida staticamente todos os 7 estados existenciais, regra de ação primária única, ausência de emojis proibidos e fechamento por tecla Escape.
+- **Unresolved uncertainty:** Nenhuma.
+- **Human approval:** Pending human review.
+
 
