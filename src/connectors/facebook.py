@@ -36,7 +36,7 @@ class FacebookConnector(BaseConnector):
                 "title": "Anyone tried TX Race on 97 KX250?",
                 "content": "Hey guys, looking to rebuild my 1997 KX250. Is the seat foam comfortable for long motos? "
                            "Also does the TX-Race kit bolt right on or need bracket mods?",
-                "url": "https://www.facebook.com/groups/kx2strokegang/posts/102938471/",
+                "url": "https://www.facebook.com/groups/kx2strokegang/",
                 "published_at": "2026-11-06T18:00:00Z",
                 "metrics": {"views": 2400, "comments": 42, "likes": 115, "shares": 8},
                 "geo_country": "United States",
@@ -45,10 +45,10 @@ class FacebookConnector(BaseConnector):
             {
                 "id": "fb_honda_cr_owners_02",
                 "author": "Honda CR 2-Stroke Riders EU",
-                "author_url": "https://www.facebook.com/groups/hondacr2strokeeu",
+                "author_url": "https://www.facebook.com/txrace/",
                 "title": "TX Race Kit CR250 Gen25 In Stock?",
                 "content": "Where can I buy the TX Race restyle kit in Europe? What is the delivery time and price with tax included?",
-                "url": "https://www.facebook.com/groups/hondacr2strokeeu/posts/99182736/",
+                "url": "https://www.facebook.com/groups/hondacr2stroke/",
                 "published_at": "2026-11-06T20:30:00Z",
                 "metrics": {"views": 1800, "comments": 28, "likes": 64, "shares": 5},
                 "geo_country": "France",

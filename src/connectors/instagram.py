@@ -39,7 +39,7 @@ class InstagramConnector(BaseConnector):
                 "title": "RM250 2004 Build Finished!",
                 "content": "Fresh graphics installed on the TX Race restyle kit! Best investment for this RM250 2-stroke. "
                            "Tagging @txrace for the clean fitment. What do you guys think? #txrace #rm250 #suzukimx",
-                "url": "https://www.instagram.com/p/DB1829471/",
+                "url": "https://www.instagram.com/explore/tags/txrace/",
                 "published_at": "2026-11-06T15:20:00Z",
                 "metrics": {"views": 14200, "comments": 88, "likes": 2150, "shares": 140},
                 "geo_country": "Spain",
@@ -48,11 +48,11 @@ class InstagramConnector(BaseConnector):
             {
                 "id": "ig_cr125_seat_question_02",
                 "author": "@sandiego_dirt_riders",
-                "author_url": "https://www.instagram.com/sandiego_dirt_riders",
+                "author_url": "https://www.instagram.com/explore/tags/cr125/",
                 "title": "CR125 Seat foam query",
                 "content": "Anyone running the TX-Race Gen24 kit on a 2001 CR125? Is the seat comfortable for 30min motos? "
                            "Need to know before I buy! @txrace #cr125 #txrace",
-                "url": "https://www.instagram.com/p/DB2940182/",
+                "url": "https://www.instagram.com/explore/tags/cr125/",
                 "published_at": "2026-11-06T21:45:00Z",
                 "metrics": {"views": 3800, "comments": 31, "likes": 420, "shares": 12},
                 "geo_country": "United States",

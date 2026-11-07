@@ -42,7 +42,7 @@ class ForumsConnector(BaseConnector):
                 "title": "TX Race kit on 1999 Honda CR250 — Subframe and seat fitment?",
                 "content": "Has anyone installed the TX Race kit on a 97-99 generation CR250? How does the seat foam "
                            "align with the OEM gas tank and does the airbox seal properly? Looking for feedback before purchasing.",
-                "url": "https://www.thumpertalk.com/forums/topic/1429812-tx-race-cr250-fitment/",
+                "url": "https://www.thumpertalk.com/forums/search/?q=restyle+kit&quick=1",
                 "published_at": "2026-11-06T14:30:00Z",
                 "metrics": {"views": 3200, "comments": 24, "likes": 56, "shares": 3},
                 "geo_country": "United States",
@@ -51,11 +51,11 @@ class ForumsConnector(BaseConnector):
             {
                 "id": "vmx_kx125_gen25_review_02",
                 "author": "SoCal_MX_Rider",
-                "author_url": "https://www.vitalmx.com/members/socal_mx_rider",
+                "author_url": "https://www.vitalmx.com/forums/Moto-Related,20",
                 "title": "TX-Race KX125 Gen25 Restyle — Full review and where to buy",
                 "content": "Finished assembling the TX-Race Gen25 restyle kit on my KX125. The bike looks 20 years newer! "
                            "Where can I buy replacement seat covers in case I want custom gripper material? Here are track photos.",
-                "url": "https://www.vitalmx.com/forums/Moto-Related,20/TX-Race-KX125-Gen25-Review,1420912",
+                "url": "https://www.vitalmx.com/forums/Moto-Related,20",
                 "published_at": "2026-11-06T17:15:00Z",
                 "metrics": {"views": 4800, "comments": 41, "likes": 98, "shares": 7},
                 "geo_country": "United States",
@@ -64,10 +64,10 @@ class ForumsConnector(BaseConnector):
             {
                 "id": "tt_yz250_price_canada_03",
                 "author": "Ontario_Moto",
-                "author_url": "https://www.thumpertalk.com/profile/99120-ontario_moto/",
+                "author_url": "https://www.thumpertalk.com/forums/forum/13-honda-2-stroke/",
                 "title": "Where can I order the TX Race kit in Canada? Shipping cost & stock",
                 "content": "Looking for the TX Race kit for my YZ250. How much is shipping to Ontario and who is the official distributor?",
-                "url": "https://www.thumpertalk.com/forums/topic/1430114-tx-race-canada-shipping/",
+                "url": "https://www.thumpertalk.com/forums/forum/13-honda-2-stroke/",
                 "published_at": "2026-11-06T21:00:00Z",
                 "metrics": {"views": 1950, "comments": 18, "likes": 32, "shares": 2},
                 "geo_country": "Canada",

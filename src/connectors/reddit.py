@@ -38,10 +38,10 @@ class RedditConnector(BaseConnector):
                 "id": "reddit_dirtbikes_cr250_01",
                 "author": "u/MotoGuy_SoCal",
                 "author_url": "https://www.reddit.com/user/MotoGuy_SoCal",
-                "title": "New TX Race Restyle Kit for CRF250X / CR250",
+                "title": "TX Race redesign kit on a 02 CR250",
                 "content": "Where can I order the restyle kit in Canada? Is shipping fast and does it require gas tank mods? "
                            "Looking to modernize my 2004 CR250 2-stroke.",
-                "url": "https://www.reddit.com/r/Dirtbikes/comments/1gx829/tx_race_cr250_restyle/",
+                "url": "https://www.reddit.com/r/Dirtbikes/comments/1lczrov/tx_race_redesign_kit_on_a_02_cr250/",
                 "published_at": "2026-11-06T17:40:00Z",
                 "metrics": {"views": 4200, "comments": 38, "likes": 290, "shares": 14},
                 "geo_country": "Canada",
@@ -54,7 +54,7 @@ class RedditConnector(BaseConnector):
                 "title": "Before and After: 2005 YZ125 transformation with TXRace Gen25",
                 "content": "Finished my 2005 Yamaha YZ125 winter project bike! Installed the TXRace Gen25 conversion kit. "
                            "Seat is firm and modern, graphics lines are seamless.",
-                "url": "https://www.reddit.com/r/Motocross/comments/1gx992/yz125_txrace_build/",
+                "url": "https://www.reddit.com/r/Dirtbikes/comments/ev17px/anyone_have_any_experience_with_txrace_restyle/",
                 "published_at": "2026-11-06T19:15:00Z",
                 "metrics": {"views": 6100, "comments": 56, "likes": 480, "shares": 22},
                 "geo_country": "United States",

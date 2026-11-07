@@ -38,7 +38,7 @@ class MarketplacesConnector(BaseConnector):
                 "title": "TX Race Restyle Conversion Kit for Honda CR250 2002-2007 (New in Box)",
                 "content": "Brand new TX Race restyle kit in original packaging. Includes front fender, side panels, "
                            "rear fender, airbox brackets and seat foam. Where can I buy graphics? Template included. Price $450.",
-                "url": "https://www.ebay.com/itm/182947192847",
+                "url": "https://www.ebay.com/sch/i.html?_nkw=tx+race+restyle+kit",
                 "published_at": "2026-11-06T11:00:00Z",
                 "metrics": {"views": 1850, "comments": 12, "likes": 48, "shares": 5},
                 "geo_country": "United States",
@@ -47,11 +47,11 @@ class MarketplacesConnector(BaseConnector):
             {
                 "id": "mkt_wallapop_kx250_spain_02",
                 "author": "Carlos_MX_BCN",
-                "author_url": "https://es.wallapop.com/user/carlosmx-1829",
+                "author_url": "https://es.wallapop.com/search?keywords=tx+race",
                 "title": "Kawasaki KX250 2003 con kit TX Race Restyle montado",
                 "content": "Vendo KX250 2T en perfecto estado con kit TX Race recién instalado. Precio 3.200€. "
                            "Comprado directamente en tienda oficial TX Race. Se puede ver y probar.",
-                "url": "https://es.wallapop.com/item/kawasaki-kx250-tx-race-8918274",
+                "url": "https://es.wallapop.com/search?keywords=tx+race",
                 "published_at": "2026-11-06T16:20:00Z",
                 "metrics": {"views": 920, "comments": 15, "likes": 34, "shares": 4},
                 "geo_country": "Spain",

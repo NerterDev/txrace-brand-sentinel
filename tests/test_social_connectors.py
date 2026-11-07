@@ -31,7 +31,7 @@ class TestSocialConnectors(unittest.TestCase):
         self.assertGreater(len(mentions), 0)
         for m in mentions:
             self.assertEqual(m.platform, Platform.INSTAGRAM)
-            self.assertTrue(m.url.startswith("https://www.instagram.com/p/"))
+            self.assertTrue(m.url.startswith("https://www.instagram.com/"))
             self.assertIn(m.model_detected, ["RM250", "CR125"])
 
     def test_facebook_connector_fetch(self) -> None:

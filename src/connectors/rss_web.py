@@ -37,7 +37,7 @@ class RssWebConnector(BaseConnector):
                 "content": "In this edition of Two-Stroke Tuesday, we look at how the TX Race conversion kit "
                            "gives a 20-year-old CR250 the ergonomics and aggressive look of a modern 2025 machine. "
                            "Installation guide and seat bracket details.",
-                "url": "https://motocrossactionmag.com/two-stroke-tuesday-tx-race-cr250/",
+                "url": "https://motocrossactionmag.com/?s=restyle+kit",
                 "published_at": "2026-11-05T12:00:00Z",
                 "metrics": {"views": 9500, "comments": 16, "likes": 320, "shares": 45},
                 "geo_country": "United States",
