@@ -1,0 +1,81 @@
+{
+  "task_id": "TASK-002",
+  "title": "Motor de Keywords (matcher.py), Filtros Negativos, Prioritizer, Deduplicador SQLite e DDoS Guard",
+  "status": "closed",
+  "sealed": true,
+  "completed_at": "2026-11-07T02:25:00+01:00",
+  "verifier": "Harness Verification Engine",
+  "evidence": {
+    "matcher": {
+      "class": "KeywordMatcher",
+      "source": "src/engine/matcher.py",
+      "capabilities": [
+        "Primary brand query regex matching with word boundaries",
+        "Motorcycle brand and model extraction (Honda, Kawasaki, Suzuki, Yamaha)",
+        "Restyle kit generation extraction (Gen2, Gen24, Gen25)",
+        "Buying intent classification (COMPRA_ATIVA, VIRAL, PROJETO_BUILD, DUVIDA_TECNICA, GERAL)",
+        "Instant rejection via negative filters list (NASCAR, F1, racing games, marathons)"
+      ],
+      "tests_passed": 6
+    },
+    "prioritizer": {
+      "class": "Prioritizer",
+      "source": "src/engine/prioritizer.py",
+      "capabilities": [
+        "Weighted scoring formula (intent 40%, engagement 30%, sentiment 15%, freshness 15%)",
+        "Normalized 0.0 - 100.0 output score",
+        "Multi-language copy-paste official reply generator (EN, PT, ES) with official https://txrace.com store links"
+      ],
+      "tests_passed": 4
+    },
+    "deduplicator": {
+      "class": "Deduplicator",
+      "source": "src/engine/deduplicator.py",
+      "capabilities": [
+        "SQLite-backed ACID store with indexed seen_mentions table",
+        "Idempotent registration of SHA-256 mention IDs",
+        "filter_new() batch pipeline filtering",
+        "purge_older_than(days) retention maintenance"
+      ],
+      "tests_passed": 4
+    },
+    "ddos_guard": {
+      "class": "DDoSGuard",
+      "source": "src/engine/ddos_guard.py",
+      "capabilities": [
+        "Adaptive rate-limiting with randomized jitter (+/- 15%)",
+        "Exponential backoff multiplier (2^n) on consecutive failures",
+        "Failure reset on successful request",
+        "Configurable max retry limits"
+      ],
+      "tests_passed": 4
+    },
+    "integration_test": {
+      "status": "passed",
+      "pipeline": "Raw mention -> Matcher enrichment -> Prioritizer scoring/reply -> Deduplicator filter/insert -> DDoSGuard pacing"
+    },
+    "tests": {
+      "runner": "python -m unittest discover -s tests -p 'test_*.py'",
+      "total_tests": 33,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 0.044
+    }
+  },
+  "affected_files": [
+    "src/engine/matcher.py",
+    "src/engine/prioritizer.py",
+    "src/engine/deduplicator.py",
+    "src/engine/ddos_guard.py",
+    "src/engine/__init__.py",
+    "tests/test_matcher.py",
+    "tests/test_prioritizer.py",
+    "tests/test_deduplicator.py",
+    "tests/test_ddos_guard.py",
+    "tasks/TASK-002.yaml",
+    "DECISIONS.md",
+    ".harness/source_of_truth.yaml",
+    ".harness/state.json"
+  ]
+}
+

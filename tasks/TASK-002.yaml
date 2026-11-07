@@ -1,0 +1,101 @@
+version: "1.0"
+id: "TASK-002"
+title: "Motor de Keywords (matcher.py), Filtros Negativos, Prioritizer, Deduplicador SQLite e DDoS Guard"
+status: "closed"
+profile: "software"
+
+objective: >
+  Implementar o núcleo semântico e operacional de inteligência da marca:
+  1. Motor de Keywords (matcher.py) com lógica booleana, identificação de modelos (Honda, Kawasaki, Suzuki, Yamaha), gerações de kit (Gen2, Gen24, Gen25) e filtros negativos de exclusão de falsos positivos.
+  2. Prioritizer (prioritizer.py) para cálculo do priority_score (0-100) e geração da resposta recomendada (recommended_reply) em EN/PT/ES.
+  3. Deduplicador SQLite (deduplicator.py) persistindo hashes SHA-256 para evitar duplicados entre execuções de cron.
+  4. DDoS Guard (ddos_guard.py) para rate-limiting adaptativo e backoff exponencial em scraping.
+
+source_of_truth:
+  keywords_config: "config/keywords.yaml"
+  settings_config: "config/settings.yaml"
+  matcher: "src/engine/matcher.py"
+  prioritizer: "src/engine/prioritizer.py"
+  deduplicator: "src/engine/deduplicator.py"
+  ddos_guard: "src/engine/ddos_guard.py"
+
+data_trace:
+  ingress: "Menções em bruto ou semi-estruturadas recolhidas pelos conectores (texto, título, url)"
+  validation: "Verificação booleana de marca (TX RACE), descarte imediato por filtros negativos (e.g. jogos, f1, maratonas), extração canónica de modelo e geração"
+  state: "Armazenamento atómico e indexação de hashes SHA-256 em base SQLite local (sentinel_cache.sqlite)"
+  egress: "MentionDTO enriquecido com intent, model_detected, brand_detected, generation, priority_score e recommended_reply"
+  root_cause: "Necessidade de transformar texto disperso da web em telemetria forense de alta densidade sem ruído nem duplicados"
+
+strict_schema:
+  schema_authority: "src/models/mention.py"
+  declared_interfaces:
+    - name: "MatchResult"
+      type: "dataclass"
+      fields:
+        - "matched: bool"
+        - "brand_detected: str"
+        - "model_detected: str"
+        - "generation: str | None"
+        - "intent: BuyingIntent"
+        - "is_negative_match: bool"
+    - name: "KeywordMatcher"
+      type: "Class"
+      methods:
+        - "match_text(title: str, content: str) -> MatchResult"
+        - "enrich_mention(mention: MentionDTO) -> MentionDTO | None"
+    - name: "Prioritizer"
+      type: "Class"
+      methods:
+        - "calculate_priority(intent: BuyingIntent, views: int, sentiment_score: float, published_at: str) -> float"
+        - "generate_reply(intent: BuyingIntent, model: str, generation: str | None, language: str) -> str"
+    - name: "Deduplicator"
+      type: "Class"
+      methods:
+        - "is_duplicate(mention_id: str) -> bool"
+        - "register(mention: MentionDTO) -> bool"
+        - "filter_new(mentions: list[MentionDTO]) -> list[MentionDTO]"
+    - name: "DDoSGuard"
+      type: "Class"
+      methods:
+        - "wait_turn(domain: str) -> None"
+        - "record_failure(domain: str) -> float"
+        - "record_success(domain: str) -> None"
+
+phantom_interface_prevention:
+  new_interfaces:
+    - "MatchResult"
+    - "KeywordMatcher"
+    - "Prioritizer"
+    - "Deduplicator"
+    - "DDoSGuard"
+  justification: "Componentes centrais do motor semântico e de persistência exigidos pelo PROJECT.md e ARCHITECTURE.md."
+
+affected_files:
+  - "src/engine/matcher.py"
+  - "src/engine/prioritizer.py"
+  - "src/engine/deduplicator.py"
+  - "src/engine/ddos_guard.py"
+  - "src/engine/__init__.py"
+  - "tests/test_matcher.py"
+  - "tests/test_prioritizer.py"
+  - "tests/test_deduplicator.py"
+  - "tests/test_ddos_guard.py"
+  - ".harness/source_of_truth.yaml"
+  - ".harness/state.json"
+
+verification_plan:
+  type: "deterministic_unit_tests"
+  command: "python -m unittest discover -s tests -p 'test_*.py'"
+  evidence_required:
+    - "test_matcher passes: extração exata de marcas, modelos Honda/Kawasaki/Suzuki/Yamaha, gerações Gen2/24/25, intents e exclusão estrita de negativos"
+    - "test_prioritizer passes: scoring ponderado [0-100] e geração de respostas personalizadas"
+    - "test_deduplicator passes: persistência SQLite, idempotência e filtragem de duplicados"
+    - "test_ddos_guard passes: rate limiting por domínio e cálculo exponencial de backoff"
+
+done_when:
+  - "matcher.py, prioritizer.py, deduplicator.py e ddos_guard.py implementados"
+  - "Filtros negativos bloqueiam com 100% de precisão menções falsas"
+  - "Deduplicador SQLite isola re-execuções sem duplicar registos"
+  - "Prioritizer gera score e sugestão oficial de resposta com link da loja"
+  - "100% dos testes determinísticos passam via python -m unittest"
+

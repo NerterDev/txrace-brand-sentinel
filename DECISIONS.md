@@ -842,3 +842,21 @@ No architecture decision is considered final until explicitly approved by the hu
 - **Unresolved uncertainty:** Nenhuma.
 - **Human approval:** Pending human review.
 
+### D044: Motor Semântico de Keywords, Deduplicação SQLite e Resiliência DDoS Guard (TASK-002)
+- **Context:**
+  1. Necessidade de filtrar ruído da internet, identificar marcas de motos compatíveis (Honda, Kawasaki, Suzuki, Yamaha), gerações de restyle (Gen2, Gen24, Gen25) e intenções comerciais.
+  2. Necessidade de descartar falsos positivos com filtros negativos e calcular score de prioridade (0-100) com respostas recomendadas da equipa comercial.
+  3. Prevenção de duplicados através de hashing SHA-256 e persistência ACID em SQLite local (`sentinel_cache.sqlite`), e controlo de cadência de scraping com rate limiting e backoff exponencial (`ddos_guard.py`).
+- **Decision:**
+  1. Implementado `KeywordMatcher` em `src/engine/matcher.py` com avaliação booleana, exclusão imediata de negativos e enriquecimento de `MentionDTO`.
+  2. Implementado `Prioritizer` em `src/engine/prioritizer.py` com fórmula de 4 pesos (intenção 40%, engajamento 30%, sentimento 15%, frescura 15%) e gerador de respostas para equipa em EN/PT/ES com link oficial `https://txrace.com`.
+  3. Implementado `Deduplicator` em `src/engine/deduplicator.py` com base SQLite indexada e método `filter_new()`.
+  4. Implementado `DDoSGuard` em `src/engine/ddos_guard.py` com delay adaptativo, jitter aleatório (+/-15%) e backoff exponencial ($2^n$).
+- **Alternatives considered:**
+  1. Deduplicação apenas em memória RAM. (Rejeitado: causaria reprocessamento duplicado e desperdício de chamadas entre rondas periódicas do cron de 4 horas).
+  2. LLM em tempo real para matching básico. (Rejeitado: regex determinístico e boolean matching são instantâneos (<1ms), custo zero e imunes a alucinações de modelos de motas).
+- **Evidence / Reasoning:**
+  - 33/33 testes unitários determinísticos aprovados com 100% de sucesso em 0.053s.
+- **Unresolved uncertainty:** Nenhuma.
+- **Human approval:** Pending human review.
+

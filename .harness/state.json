@@ -7,7 +7,8 @@
   "continuous_mode": true,
   "active_task": null,
   "closed_tasks": [
-    "TASK-001"
+    "TASK-001",
+    "TASK-002"
   ],
   "facts": [
     "F001",
@@ -78,33 +79,34 @@
     "D040",
     "D041",
     "D042",
-    "D043"
+    "D043",
+    "D044"
   ],
   "learning": {
-    "updated_at": "2026-11-07T01:36:00+01:00",
+    "updated_at": "2026-11-07T02:31:00+01:00",
     "lessons": 0,
     "pass_rate_pct": 100.0,
     "active_failures": {}
   },
   "improvement_status": "none",
-  "last_test": "tests/ (15 passed: MentionDTO validation, immutability, roundtrip, score bounds, auto-viral, BaseConnector, timeout partial degradation, crash isolation, ConnectorRegistry orchestration)",
+  "last_test": "tests/ (33 passed: matcher, prioritizer, deduplicator, ddos_guard, connectors, mention_dto, and full boundary integration)",
   "last_action": {
-    "action": "task_001_closed",
-    "task": "TASK-001",
-    "at": "2026-11-07T01:36:00+01:00"
+    "action": "task_002_closed",
+    "task": "TASK-002",
+    "at": "2026-11-07T02:31:00+01:00"
   },
   "resume_hud": {
     "project": "TX RACE Brand Sentinel",
     "profile": "software",
-    "active_task": "TASK-001 Concluída e Selada",
-    "last_decision": "D043: Bootstrap Canonico, MentionDTO e Dynamic Connector Registry",
-    "next_step": "Planear TASK-002 (/harness-plan TASK-002): Implementação do Motor de Keywords (matcher.py), filtros negativos e deduplicador SQLite."
+    "active_task": "TASK-002 Concluída e Selada",
+    "last_decision": "D044: Motor Semantico de Keywords, Deduplicacao SQLite e Resiliencia DDoS Guard",
+    "next_step": "Planear TASK-003 (/harness-plan TASK-003): Conectores de Vídeo e Redes (YouTube v3, TikTok, Instagram, Reddit PRAW, Facebook Groups)."
   },
   "verification_layer": "effect-runtime",
   "last_snapshot": {
-    "id": "snap_task001_closed",
-    "at": "2026-11-07T01:36:00+01:00",
-    "label": "TASK-001 closed with receipt-TASK-001.json sealed",
-    "total_files": 58
+    "id": "snap_task002_closed",
+    "at": "2026-11-07T02:31:00+01:00",
+    "label": "TASK-002 closed with receipt-TASK-002.json sealed",
+    "total_files": 70
   }
 }
