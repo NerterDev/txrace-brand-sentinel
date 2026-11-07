@@ -1,0 +1,98 @@
+name: "TX RACE Brand Sentinel Radar & Pages Deploy"
+
+on:
+  schedule:
+    # Run every 4 hours automatically
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run execution (test without committing files)'
+        required: false
+        type: boolean
+        default: false
+      verbose:
+        description: 'Verbose logging'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  radar_scan:
+    name: "Radar Scanning & Telemetry Ingestion"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: "Set up Python 3.12"
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: "Install Dependencies"
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: "Execute Deterministic Test Suite"
+        run: |
+          python -m unittest discover -s tests -p 'test_*.py' -v
+
+      - name: "Run Sentinel Central Orchestrator"
+        run: |
+          FLAGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+          fi
+          if [ "${{ inputs.verbose }}" = "true" ]; then
+            FLAGS="$FLAGS --verbose"
+          fi
+          python -m src.main --output-dir dashboard/data $FLAGS
+
+      - name: "GitOps Auto-Commit Data Updates"
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add dashboard/data/
+          if git diff --staged --quiet; then
+            echo "No data changes detected in this scanning cycle."
+          else
+            git commit -m "chore(gitops): update brand intelligence radar data [skip ci]"
+            git push origin HEAD:${{ github.ref }}
+          fi
+
+      - name: "Configure GitHub Pages"
+        uses: actions/configure-pages@v5
+
+      - name: "Upload GitHub Pages Artifact"
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'dashboard'
+
+  deploy_pages:
+    name: "Deploy SPA to GitHub Pages"
+    needs: radar_scan
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: "Deploy to GitHub Pages"
+        id: deployment
+        uses: actions/deploy-pages@v4

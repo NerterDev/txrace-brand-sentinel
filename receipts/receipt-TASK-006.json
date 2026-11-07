@@ -1,0 +1,44 @@
+{
+  "task_id": "TASK-006",
+  "title": "GitOps Workflow Engine e Orquestrador Central (src/main.py & sentinel_radar.yml)",
+  "status": "closed",
+  "sealed": true,
+  "completed_at": "2026-11-07T03:08:00+01:00",
+  "verifier": "Harness Verification Engine",
+  "evidence": {
+    "orchestrator": {
+      "file": "src/main.py",
+      "class": "SentinelOrchestrator",
+      "cli_function": "main",
+      "features": "Dynamic config loading, deduplication with Deduplicator, semantic matching, priority ranking, JSON export, CLI flags (--dry-run, --output-dir, --db-path, --verbose)"
+    },
+    "gitops_workflow": {
+      "file": ".github/workflows/sentinel_radar.yml",
+      "schedule": "0 */4 * * *",
+      "triggers": ["schedule", "workflow_dispatch"],
+      "permissions": ["contents: write", "pages: write", "id-token: write"],
+      "jobs": [
+        "radar_scan (Python 3.12, tests, python -m src.main, gitops auto-commit, upload-pages-artifact)",
+        "deploy_pages (actions/deploy-pages@v4 to github-pages environment)"
+      ]
+    },
+    "tests": {
+      "runner": "python -m unittest discover -s tests -p 'test_*.py'",
+      "total_tests": 61,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 0.521
+    }
+  },
+  "affected_files": [
+    "src/main.py",
+    ".github/workflows/sentinel_radar.yml",
+    "requirements.txt",
+    "tests/test_main_orchestrator.py",
+    "tasks/TASK-006.yaml",
+    "receipts/receipt-TASK-006.json",
+    "DECISIONS.md",
+    ".harness/source_of_truth.yaml",
+    ".harness/state.json"
+  ]
+}

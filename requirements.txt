@@ -1,0 +1,2 @@
+# TX RACE Brand Sentinel — Core Python Dependencies
+pyyaml>=6.0.1

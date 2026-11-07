@@ -920,4 +920,24 @@ No architecture decision is considered final until explicitly approved by the hu
 - **Unresolved uncertainty:** Nenhuma.
 - **Human approval:** Pending human review.
 
+### D048: Motor GitOps de Execução Agendada e Orquestrador Central CLI (TASK-006)
+- **Context:**
+  1. Necessidade de automação autónoma ponta a ponta sem infraestruturas de servidores pagas (Zero Ops / Zero Cost).
+  2. Execução de rondas de inteligência a cada 4 horas com persistência incremental no repositório e deploy automático no GitHub Pages.
+- **Decision:**
+  1. Implementado `SentinelOrchestrator` e CLI em `src/main.py` coordenando o carregamento dinâmico de 10 conectores, validação de keywords, enriquecimento de intenção, deduplicação em SQLite (`sentinel_cache.sqlite`) e exportação atómica de JSON para o SPA.
+  2. Implementado workflow GitOps em `.github/workflows/sentinel_radar.yml` com:
+     - Gatilho cron a cada 4 horas (`0 */4 * * *`) e manual (`workflow_dispatch`).
+     - Execução da suíte completa de testes antes de qualquer mutação.
+     - Auto-commit de `dashboard/data/` com o utilizador `github-actions[bot]`.
+     - Deploy atómico da pasta `dashboard/` no ambiente `github-pages`.
+  3. Adicionado suporte às flags `--dry-run`, `--output-dir`, `--db-path` e `--verbose`.
+- **Alternatives considered:**
+  1. Utilizar um webhook em servidor VPS externo ou cron em Lambda. (Rejeitado: geraria custos recorrentes e complexidade de infraestrutura; GitHub Actions + Pages oferecem disponibilidade 99.9%, custo zero e total auditabilidade em Git).
+- **Evidence / Reasoning:**
+  - 61/61 testes unitários determinísticos aprovados com 100% de sucesso em 0.521s (`tests/test_main_orchestrator.py`).
+  - `sentinel_radar.yml` validado com integridade sintática e de permissões de deploy.
+- **Unresolved uncertainty:** Nenhuma.
+- **Human approval:** Pending human review.
+
 

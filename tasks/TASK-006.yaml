@@ -1,0 +1,65 @@
+version: "1.0"
+id: "TASK-006"
+title: "GitOps Workflow Engine e Orquestrador Central (src/main.py & sentinel_radar.yml)"
+status: "closed"
+sealed: true
+closed_at: "2026-11-07T03:08:00+01:00"
+profile: "software"
+
+objective: >
+  Implementar o orquestrador central CLI e o motor GitOps de execução contínua:
+  1. src/main.py: orquestrador central que carrega as configurações de fontes (config/sources.yaml)
+     e palavras-chave (config/keywords.yaml), inicializa o ConnectorRegistry, executa a recolha
+     de menções através dos 10 conectores, filtra duplicados via Deduplicator (SQLite),
+     enriquece com KeywordMatcher e Prioritizer, e exporta os dados consolidados via JsonExporter
+     para dashboard/data/ (current_mentions.json, kpis.json, analytics.json).
+  2. .github/workflows/sentinel_radar.yml: pipeline de CI/CD e GitOps no GitHub Actions com:
+     - Execução periódica a cada 4 horas (0 */4 * * *) e trigger manual (workflow_dispatch).
+     - Execução dos testes determinísticos com Python 3.12 em ubuntu-latest.
+     - Execução de python -m src.main.
+     - GitOps auto-commit dos ficheiros de telemetria em dashboard/data/ pelo bot github-actions[bot].
+     - Deploy contínuo da pasta dashboard/ no GitHub Pages (https://nerterdev.github.io/txrace-brand-sentinel/).
+
+source_of_truth:
+  orchestrator: "src/main.py"
+  workflow: ".github/workflows/sentinel_radar.yml"
+  sources_config: "config/sources.yaml"
+  registry: "src/connectors/registry.py"
+  exporter: "src/dispatchers/json_exporter.py"
+
+data_trace:
+  ingress: "Disparo agendado via cron do GitHub Actions ou execução manual da CLI"
+  validation: "Verificação da integridade das configurações e execução de testes determinísticos antes de publicar"
+  state: "Persistência incremental no cache SQLite (sentinel_cache.sqlite) e geração atómica dos ficheiros JSON"
+  egress: "Commit automático no repositório Git e publicação em tempo real no GitHub Pages"
+  root_cause: "Operação 100% autónoma, sem servidores dedicados pagos, resiliente e transparente via GitOps"
+
+strict_schema:
+  schema_authority: "src/models/mention.py"
+  declared_interfaces:
+    - name: "SentinelOrchestrator"
+      type: "class"
+      methods: ["run_cycle(dry_run, output_dir, db_path) -> dict[str, Any]"]
+    - name: "main"
+      type: "function"
+      methods: ["main(args) -> int"]
+
+affected_files:
+  - "src/main.py"
+  - ".github/workflows/sentinel_radar.yml"
+  - "tests/test_main_orchestrator.py"
+  - ".harness/source_of_truth.yaml"
+  - ".harness/state.json"
+
+verification_plan:
+  type: "deterministic_integration_and_workflow_tests"
+  command: "python -m unittest discover -s tests -p 'test_*.py'"
+  evidence_required:
+    - "test_main_orchestrator passes: ciclo completo de recolha, deduplicação, priorização e exportação de JSON"
+    - "Validação do ficheiro sentinel_radar.yml: sintaxe YAML correta, cron 0 */4 * * *, permissões de Pages e passos de deploy"
+    - "100% dos testes determinísticos passam"
+
+done_when:
+  - "src/main.py está implementado com suporte a flags de CLI (--dry-run, --output-dir, --db-path, --verbose)"
+  - ".github/workflows/sentinel_radar.yml está criado com cron 4h e deploy no GitHub Pages"
+  - "Testes determinísticos em tests/test_main_orchestrator.py passam com sucesso"
