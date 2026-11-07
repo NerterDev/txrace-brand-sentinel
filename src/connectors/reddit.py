@@ -41,7 +41,7 @@ class RedditConnector(BaseConnector):
                 "title": "TX Race redesign kit on a 02 CR250",
                 "content": "Where can I order the restyle kit in Canada? Is shipping fast and does it require gas tank mods? "
                            "Looking to modernize my 2004 CR250 2-stroke.",
-                "url": "https://www.reddit.com/r/Dirtbikes/comments/1lczrov/tx_race_redesign_kit_on_a_02_cr250/",
+                "url": "https://www.reddit.com/r/Dirtbikes/comments/ev17px/anyone_have_any_experience_with_txrace_restyle/",
                 "published_at": "2026-11-06T17:40:00Z",
                 "metrics": {"views": 4200, "comments": 38, "likes": 290, "shares": 14},
                 "geo_country": "Canada",

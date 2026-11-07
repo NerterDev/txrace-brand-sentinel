@@ -47,7 +47,7 @@ class TikTokConnector(BaseConnector):
                 "author_url": "https://www.tiktok.com/@txrace",
                 "title": "Yamaha YZ125 com kit TX-Race",
                 "content": "A perguntar onde comprar este kit TX Race para YZ125 e preço do envio para Portugal! #txrace #yz125 #ondecomprar",
-                "url": "https://www.tiktok.com/@motos_mx_pt",
+                "url": "https://www.tiktok.com/@txrace",
                 "published_at": "2026-11-06T19:00:00Z",
                 "metrics": {"views": 18500, "comments": 142, "likes": 1950, "shares": 180},
                 "geo_country": "Portugal",

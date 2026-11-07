@@ -51,11 +51,11 @@ class ForumsConnector(BaseConnector):
             {
                 "id": "vmx_kx125_gen25_review_02",
                 "author": "SoCal_MX_Rider",
-                "author_url": "https://www.vitalmx.com/forums/Moto-Related,20",
+                "author_url": "https://www.vitalmx.com/forums/Moto-Related",
                 "title": "TX-Race KX125 Gen25 Restyle — Full review and where to buy",
                 "content": "Finished assembling the TX-Race Gen25 restyle kit on my KX125. The bike looks 20 years newer! "
                            "Where can I buy replacement seat covers in case I want custom gripper material? Here are track photos.",
-                "url": "https://www.vitalmx.com/forums/Moto-Related,20",
+                "url": "https://www.vitalmx.com/forums/Moto-Related",
                 "published_at": "2026-11-06T17:15:00Z",
                 "metrics": {"views": 4800, "comments": 41, "likes": 98, "shares": 7},
                 "geo_country": "United States",

@@ -44,7 +44,7 @@ class YouTubeConnector(BaseConnector):
                 "title": "CR125 Transformation with TXRACE! (Full 2003 Build)",
                 "content": "In this video we install the TX Race Gen25 restyle kit on a 2003 Honda CR125. "
                            "The fitment was dead simple, seat is amazing, completely modernizes the 2-stroke!",
-                "url": "https://www.youtube.com/watch?v=wwrIoY2KOIk",
+                "url": "https://www.youtube.com/watch?v=hjknfkDuslI",
                 "published_at": "2026-11-04T18:30:00Z",
                 "metrics": {"views": 54200, "comments": 182, "likes": 2800, "shares": 310},
                 "geo_country": "United States",
@@ -57,7 +57,7 @@ class YouTubeConnector(BaseConnector):
                 "title": "TX Race Kit on CRF250X — Where to buy & review",
                 "content": "Where can I order the TX Race restyle kit in Europe? Does it fit the CRF250X without modifying the tank? "
                            "Here is our review of price, shipping and installation guide.",
-                "url": "https://www.youtube.com/watch?v=ZlF1U0oEaJ0",
+                "url": "https://www.youtube.com/watch?v=hW8wSGes6cE",
                 "published_at": "2026-11-06T14:10:00Z",
                 "metrics": {"views": 11500, "comments": 94, "likes": 750, "shares": 65},
                 "geo_country": "Portugal",
@@ -70,7 +70,7 @@ class YouTubeConnector(BaseConnector):
                 "title": "Kawasaki KX250 TX-Race Restyle Kit Test Run",
                 "content": "First ride after installing the TX-Race plastics on our 2005 KX250 project bike. "
                            "Seat foam feel and overall ergos tested on the track.",
-                "url": "https://www.youtube.com/watch?v=0hMh1jY41XU",
+                "url": "https://www.youtube.com/watch?v=LpT4M2ZUPIU",
                 "published_at": "2026-11-05T09:00:00Z",
                 "metrics": {"views": 8400, "comments": 42, "likes": 530, "shares": 28},
                 "geo_country": "United States",

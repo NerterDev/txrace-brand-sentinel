@@ -36,7 +36,7 @@ class TwitterConnector(BaseConnector):
                 "title": "TX Race Kit on 2002 CR125!",
                 "content": "Just saw this 2002 CR125 build running the full TX Race Gen25 restyle kit. "
                            "2-strokes will never die. Where can I buy this in the UK? #txrace #cr125 #motocross",
-                "url": "https://x.com/search?q=txrace+restyle",
+                "url": "https://x.com/txrace",
                 "published_at": "2026-11-06T18:45:00Z",
                 "metrics": {"views": 16400, "comments": 22, "likes": 540, "shares": 68},
                 "geo_country": "United Kingdom",
