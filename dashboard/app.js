@@ -18,6 +18,7 @@
     analytics: null,
     activeView: "cards", // 'cards' | 'table' | 'analytics'
     selectedMention: null,
+    lastFocusedTrigger: null,
     sortField: "priority_score",
     sortAscending: false,
     filters: {
@@ -36,6 +37,8 @@
   const dom = {};
 
   function cacheDomElements() {
+    dom.sentinelHeader = document.getElementById("sentinelHeader");
+    dom.mainContent = document.getElementById("mainContent");
     dom.btnRefresh = document.getElementById("btnRefresh");
     dom.btnExportCsv = document.getElementById("btnExportCsv");
     dom.btnExportJson = document.getElementById("btnExportJson");
@@ -155,18 +158,72 @@
     const toast = document.createElement("div");
     toast.className = "toast";
     toast.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
         <polyline points="22 4 12 14.01 9 11.01"></polyline>
       </svg>
-      <span>${escapeHtml(message)}</span>
     `;
+    const msgSpan = document.createElement("span");
+    msgSpan.textContent = String(message || "");
+    toast.appendChild(msgSpan);
     dom.toastContainer.appendChild(toast);
     setTimeout(() => {
       toast.style.opacity = "0";
       toast.style.transition = "opacity 0.25s ease-out";
       setTimeout(() => toast.remove(), 250);
     }, 3200);
+  }
+
+  // Validates external post URLs and rejects official self-brand links
+  function sanitizeExternalUrl(rawUrl) {
+    if (!rawUrl || typeof rawUrl !== "string") return null;
+    try {
+      const parsed = new URL(rawUrl.trim());
+      if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+        return null;
+      }
+      const host = parsed.hostname.toLowerCase();
+      if (host === "txrace.com" || host === "www.txrace.com" || host.endsWith(".txrace.com")) {
+        return null;
+      }
+      return parsed.href;
+    } catch (_err) {
+      return null;
+    }
+  }
+
+  function isOfficialBrandMention(m) {
+    if (!m) return true;
+    const author = String(m.author || "").trim().toLowerCase();
+    const excludedAuthors = new Set([
+      "tx race",
+      "txrace",
+      "tx-race",
+      "@txrace",
+      "@txracecom",
+      "txracecom",
+      "tx race official",
+      "tx race official (@txracecom)",
+      "tx race store",
+      "tx race technical guide",
+      "baudea global",
+    ]);
+    if (excludedAuthors.has(author) || author.includes("txracecom") || author.startsWith("tx race official")) {
+      return true;
+    }
+    const validUrl = sanitizeExternalUrl(m.url);
+    if (!validUrl) return true;
+    const lowerUrl = validUrl.toLowerCase();
+    if (
+      lowerUrl.includes("tiktok.com/@txrace") ||
+      lowerUrl.includes("instagram.com/txrace") ||
+      lowerUrl.includes("facebook.com/txrace") ||
+      lowerUrl.includes("x.com/txrace") ||
+      lowerUrl.includes("youtube.com/@txracecom")
+    ) {
+      return true;
+    }
+    return false;
   }
 
   // =========================================================================
@@ -216,8 +273,11 @@
         state.isDegraded = true;
       }
 
-      state.mentions = mentionsData.mentions || [];
-      state.kpis = kpisData || computeKpisLocally(state.mentions);
+      state.mentions = (mentionsData.mentions || []).filter((m) => !isOfficialBrandMention(m));
+      state.kpis = computeKpisLocally(state.mentions);
+      if (kpisData && kpisData.total_mentions_30d === state.mentions.length) {
+        state.kpis = kpisData;
+      }
       state.analytics = analyticsData || computeAnalyticsLocally(state.mentions);
 
       // Timestamp
@@ -357,6 +417,10 @@
 
     const frag = document.createDocumentFragment();
     state.filteredMentions.forEach((m) => {
+      const safePostUrl = sanitizeExternalUrl(m.url);
+      if (!safePostUrl) return;
+      const safeAuthorUrl = sanitizeExternalUrl(m.author_url) || safePostUrl;
+
       const card = document.createElement("article");
       card.className = "mention-card";
       card.setAttribute("data-id", m.id);
@@ -370,7 +434,7 @@
           <div class="card-top">
             <div class="platform-author-badge">
               <span class="platform-pill">${escapeHtml(m.platform)}</span>
-              <a href="${escapeHtml(m.author_url || m.url)}" class="author-link" target="_blank" rel="noopener noreferrer">${escapeHtml(m.author)}</a>
+              <a href="${escapeHtml(safeAuthorUrl)}" class="author-link" target="_blank" rel="noopener noreferrer" aria-label="Perfil de ${escapeHtml(m.author)} em ${escapeHtml(m.platform)}">${escapeHtml(m.author)}</a>
             </div>
             <time class="time-tag" datetime="${escapeHtml(m.published_at)}">${relativeTime}</time>
           </div>
@@ -391,30 +455,30 @@
           <div class="card-metrics-row">
             <div class="metrics-group">
               <span class="metric-item" title="Visualizações">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 <span class="tnum">${formatNumber(m.metrics ? m.metrics.views : 0)}</span>
               </span>
               <span class="metric-item" title="Comentários">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                 <span class="tnum">${formatNumber(m.metrics ? m.metrics.comments : 0)}</span>
               </span>
               <span class="metric-item" title="Gostos/Reações">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
                 <span class="tnum">${formatNumber(m.metrics ? m.metrics.likes : 0)}</span>
               </span>
             </div>
-            <div class="sparkline-wrapper">
+            <div class="sparkline-wrapper" aria-hidden="true">
               ${generateMiniSparkline(m.priority_score)}
             </div>
           </div>
 
           <div class="card-actions-row">
-            <button class="btn btn-secondary btn-dossier" data-id="${m.id}" type="button">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            <button class="btn btn-secondary btn-dossier" data-id="${escapeHtml(m.id)}" type="button" aria-label="Dossiê Forense: ${escapeHtml(m.title)}">
+              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
               <span>Dossiê Forense</span>
             </button>
-            <a href="${escapeHtml(m.url)}" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            <a href="${escapeHtml(safePostUrl)}" class="btn btn-open-post" target="_blank" rel="noopener noreferrer" aria-label="Abrir Post: ${escapeHtml(m.title)}">
+              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
               <span>Abrir Post</span>
             </a>
           </div>
@@ -433,6 +497,10 @@
 
     const frag = document.createDocumentFragment();
     state.filteredMentions.forEach((m) => {
+      const safePostUrl = sanitizeExternalUrl(m.url);
+      if (!safePostUrl) return;
+      const safeAuthorUrl = sanitizeExternalUrl(m.author_url) || safePostUrl;
+
       const tr = document.createElement("tr");
       const brandClass = getBrandClass(m.brand_detected);
       const intentClass = getIntentClass(m.intent);
@@ -440,7 +508,7 @@
       tr.innerHTML = `
         <td><span class="platform-pill">${escapeHtml(m.platform)}</span></td>
         <td class="tnum" style="white-space: nowrap;">${formatDateShort(m.published_at)}</td>
-        <td><a href="${escapeHtml(m.author_url || m.url)}" class="author-link" target="_blank">${escapeHtml(m.author)}</a></td>
+        <td><a href="${escapeHtml(safeAuthorUrl)}" class="author-link" target="_blank" rel="noopener noreferrer" aria-label="Perfil de ${escapeHtml(m.author)}">${escapeHtml(m.author)}</a></td>
         <td>
           <span class="model-badge ${brandClass}">${escapeHtml(m.model_detected)}</span>
           ${m.generation ? `<span class="gen-badge" style="margin-left: 4px;">${escapeHtml(m.generation)}</span>` : ""}
@@ -449,8 +517,8 @@
         <td class="tnum">${formatNumber(m.metrics ? m.metrics.views : 0)}</td>
         <td class="tnum" style="font-weight: 600;">${m.priority_score.toFixed(1)}</td>
         <td style="white-space: nowrap;">
-          <button class="btn btn-secondary btn-dossier" data-id="${m.id}" style="min-height: 28px; padding: 2px 8px; font-size: 11px;">Dossiê</button>
-          <a href="${escapeHtml(m.url)}" class="btn btn-ghost" target="_blank" style="min-height: 28px; padding: 2px 8px; font-size: 11px;">Abrir</a>
+          <button class="btn btn-secondary btn-dossier" data-id="${escapeHtml(m.id)}" type="button" aria-label="Dossiê Forense: ${escapeHtml(m.title)}" style="min-height: 28px; padding: 4px 8px; font-size: 11px;">Dossiê</button>
+          <a href="${escapeHtml(safePostUrl)}" class="btn btn-open-post" target="_blank" rel="noopener noreferrer" aria-label="Abrir publicação: ${escapeHtml(m.title)}" style="min-height: 28px; padding: 4px 8px; font-size: 11px;">Abrir</a>
         </td>
       `;
 
@@ -484,23 +552,24 @@
       return;
     }
 
-    const maxCount = Math.max(...data.map((d) => d.count), 1);
+    const visibleData = data.slice(-12);
+    const maxCount = Math.max(...visibleData.map((d) => d.count), 1);
     const width = 500;
     const height = 200;
     const padding = 30;
-    const barWidth = Math.max(8, (width - padding * 2) / data.length - 6);
+    const barWidth = Math.max(8, (width - padding * 2) / visibleData.length - 6);
 
     let bars = "";
-    data.forEach((d, i) => {
-      const x = padding + i * ((width - padding * 2) / data.length) + 3;
+    visibleData.forEach((d, i) => {
+      const x = padding + i * ((width - padding * 2) / visibleData.length) + 3;
       const barHeight = (d.count / maxCount) * (height - padding * 2);
       const y = height - padding - barHeight;
 
       bars += `
         <rect x="${x}" y="${y}" width="${barWidth}" height="${barHeight}" rx="3" fill="#EF4444" opacity="0.85">
-          <title>${d.date}: ${d.count} menções (${d.reach.toLocaleString()} views)</title>
+          <title>${escapeHtml(d.date)}: ${d.count} menções (${d.reach.toLocaleString()} views)</title>
         </rect>
-        <text x="${x + barWidth / 2}" y="${height - 10}" fill="#9CA3AF" font-size="9" text-anchor="middle">${d.date.slice(5)}</text>
+        <text x="${x + barWidth / 2}" y="${height - 10}" fill="#9CA3AF" font-size="9" text-anchor="middle">${escapeHtml(d.date.slice(5))}</text>
         <text x="${x + barWidth / 2}" y="${y - 4}" fill="#F9FAFB" font-size="10" font-weight="600" text-anchor="middle">${d.count}</text>
       `;
     });
@@ -595,11 +664,12 @@
   // =========================================================================
   // VIEW 4: FORENSIC DRAWER CONTROLLER
   // =========================================================================
-  function openForensicDrawer(mentionId) {
+  function openForensicDrawer(mentionId, triggerElement) {
     const mention = state.mentions.find((m) => m.id === mentionId);
     if (!mention) return;
 
     state.selectedMention = mention;
+    state.lastFocusedTrigger = triggerElement || document.activeElement;
 
     dom.drawerTitle.textContent = mention.title || "Dossiê Forense";
     dom.drawerPlatformBadge.textContent = mention.platform;
@@ -625,7 +695,22 @@
       : "Não especificado (Global)";
     dom.drawerPublishedAt.textContent = formatDate(new Date(mention.published_at));
     dom.drawerHash.textContent = mention.id;
-    dom.drawerExternalLink.href = mention.url;
+
+    const safeUrl = sanitizeExternalUrl(mention.url);
+    if (safeUrl) {
+      dom.drawerExternalLink.href = safeUrl;
+      dom.drawerExternalLink.setAttribute(
+        "aria-label",
+        `Abrir Publicação na Fonte: ${mention.title || mention.id}`
+      );
+      dom.drawerExternalLink.style.display = "inline-flex";
+    } else {
+      dom.drawerExternalLink.style.display = "none";
+    }
+
+    // Apply inert to background landmarks while modal drawer is open
+    if (dom.sentinelHeader) dom.sentinelHeader.inert = true;
+    if (dom.mainContent) dom.mainContent.inert = true;
 
     // Open animations
     dom.drawerBackdrop.classList.add("is-open");
@@ -638,6 +723,12 @@
     dom.drawerBackdrop.classList.remove("is-open");
     dom.forensicDrawer.classList.remove("is-open");
     dom.forensicDrawer.setAttribute("aria-hidden", "true");
+    if (dom.sentinelHeader) dom.sentinelHeader.inert = false;
+    if (dom.mainContent) dom.mainContent.inert = false;
+    if (state.lastFocusedTrigger && typeof state.lastFocusedTrigger.focus === "function") {
+      state.lastFocusedTrigger.focus();
+    }
+    state.lastFocusedTrigger = null;
     state.selectedMention = null;
   }
 
@@ -865,7 +956,7 @@
       const btn = e.target.closest(".btn-dossier");
       if (btn) {
         const id = btn.getAttribute("data-id");
-        if (id) openForensicDrawer(id);
+        if (id) openForensicDrawer(id, btn);
       }
     });
 
@@ -1103,50 +1194,73 @@
       count: 3,
       mentions: [
         {
-          id: "yt_torkit_cr250_fallback",
+          id: "yt_4GT4yEOszmE",
           platform: "youtube",
-          author: "TorkiT",
-          author_url: "https://www.youtube.com/@TorkiT",
-          title: "TXRace Restyle Kit Installed on Honda CR250R - Looks TWENTY YEARS Newer!",
-          content: "TXRace Restyle Kit Installed on Honda CR250R - Looks TWENTY YEARS Newer! Step-by-step install of the TX Race restyle kit and seat conversion on our project CR250 2-stroke.",
-          url: "https://www.youtube.com/watch?v=6jbcCWEALPQ",
-          published_at: "2026-11-04T18:30:00Z",
-          model_detected: "CR250",
+          author: "Chase Builds Bikes",
+          author_url: "https://www.youtube.com/@ChaseBuiltBikes",
+          title: "Incredible CR125 Transformation with TXRACE!",
+          content: "Full transformation build installing the TX RACE restyle kit on a 2000-2001 Honda CR125 2-stroke. Modernizes the plastics and seat ergonomics completely.",
+          url: "https://www.youtube.com/watch?v=4GT4yEOszmE",
+          published_at: "2026-09-18T18:30:00Z",
+          model_detected: "CR125",
           brand_detected: "Honda",
-          generation: "Gen25",
+          generation: null,
           intent: "PROJETO_BUILD",
           sentiment: "POSITIVE",
-          sentiment_score: 0.95,
-          priority_score: 95.0,
-          metrics: { views: 38989, comments: 184, likes: 1450, shares: 120 },
+          sentiment_score: 0.92,
+          priority_score: 92.5,
+          metrics: { views: 43468, comments: 164, likes: 2180, shares: 145 },
           geo_country: "United States",
-          geo_city: "Phoenix",
+          geo_city: null,
+          is_viral: true,
+          recommended_reply:
+            "Awesome CR125 build! Thanks for running the TX RACE restyle kit. Official fitment guides at https://txrace.com",
+        },
+        {
+          id: "yt_6jbcCWEALPQ",
+          platform: "youtube",
+          author: "TorkiT",
+          author_url: "https://www.youtube.com/@TORKiT",
+          title: "TXRace Restyle Kit Installed on Honda CR250R - Looks TWENTY YEARS Newer!",
+          content: "Update your old Honda two stroke dirt bikes with this TXrace restyle kit. This kit makes your 2002-2007 Honda CR125 or CR250R look twenty years newer.",
+          url: "https://www.youtube.com/watch?v=6jbcCWEALPQ",
+          published_at: "2026-10-12T18:30:00Z",
+          model_detected: "CR250",
+          brand_detected: "Honda",
+          generation: null,
+          intent: "PROJETO_BUILD",
+          sentiment: "POSITIVE",
+          sentiment_score: 0.92,
+          priority_score: 91.0,
+          metrics: { views: 38988, comments: 184, likes: 1450, shares: 120 },
+          geo_country: "United States",
+          geo_city: null,
           is_viral: true,
           recommended_reply:
             "Awesome transformation on that CR250! Looks super clean. Check official TX RACE fitment guides at https://txrace.com",
         },
         {
-          id: "reddit_cr250_fallback",
+          id: "reddit_t3_1w0nu3w",
           platform: "reddit",
-          author: "r/Dirtbikes (Community)",
-          author_url: "https://www.reddit.com/r/Dirtbikes/comments/1lczrov/tx_race_redesign_kit_on_a_02_cr250/",
-          title: "TX Race redesign kit on a 02 CR250",
-          content: "TX Race redesign kit on a 02 CR250. Discussion on installing the TX Race restyle kit on a 2002 Honda CR250. Questions about subframe alignment and seat comfort.",
-          url: "https://www.reddit.com/r/Dirtbikes/comments/1lczrov/tx_race_redesign_kit_on_a_02_cr250/",
-          published_at: "2026-11-06T17:40:00Z",
-          model_detected: "CR250",
-          brand_detected: "Honda",
-          generation: "Gen25",
-          intent: "DUVIDA_TECNICA",
+          author: "u/Emergency_Response19",
+          author_url: "https://www.reddit.com/user/Emergency_Response19",
+          title: "2001 KX 250 restyle kit alternatives?",
+          content: "I am interested in modernizing my 2001 KX 250 a bit. However, all I can find is the TX race restyle kit. How much are riders paying and are there any other options?",
+          url: "https://www.reddit.com/r/Dirtbikes/comments/1w0nu3w/2001_kx_250_restyle_kit_alternatives/",
+          published_at: "2026-08-28T11:22:59Z",
+          model_detected: "KX250",
+          brand_detected: "Kawasaki",
+          generation: null,
+          intent: "COMPRA_ATIVA",
           sentiment: "POSITIVE",
-          sentiment_score: 0.90,
-          priority_score: 87.2,
-          metrics: { views: 4200, comments: 24, likes: 65, shares: 8 },
+          sentiment_score: 0.88,
+          priority_score: 88.4,
+          metrics: { views: 3400, comments: 19, likes: 28, shares: 4 },
           geo_country: "United States",
-          geo_city: "California",
+          geo_city: null,
           is_viral: false,
           recommended_reply:
-            "TX Race kits are engineered as direct 100% bolt-on fitment without frame modifications. Official shop: https://txrace.com",
+            "TX Race kits include custom seat assembly and bolt-on brackets with worldwide shipping at https://txrace.com",
         },
       ],
     };

@@ -1,7 +1,7 @@
-"""Deterministic unit tests for KeywordMatcher and semantic motorcycle entity extraction."""
+"""Deterministic unit tests for KeywordMatcher, official brand exclusion, and entity extraction."""
 import unittest
 
-from src.engine.matcher import KeywordMatcher, MatchResult
+from src.engine.matcher import KeywordMatcher
 from src.models.mention import BuyingIntent, MentionDTO, MentionMetrics, Platform, Sentiment
 
 
@@ -19,6 +19,16 @@ class TestKeywordMatcher(unittest.TestCase):
         self.assertEqual(result.brand_detected, "Honda")
         self.assertEqual(result.model_detected, "CR125")
         self.assertEqual(result.generation, "Gen25")
+        self.assertEqual(result.intent, BuyingIntent.PROJETO_BUILD)
+
+    def test_honda_crf250r_alias_detection(self) -> None:
+        title = "TX Race Plastics Kit on a 2004 CRF250 Build"
+        content = "Installing the TX Race restyle kit on a 2004 Honda CRF250R in Southern California."
+        result = self.matcher.match_text(title, content)
+
+        self.assertTrue(result.matched)
+        self.assertEqual(result.brand_detected, "Honda")
+        self.assertEqual(result.model_detected, "CRF250R")
         self.assertEqual(result.intent, BuyingIntent.PROJETO_BUILD)
 
     def test_buying_intent_detection(self) -> None:
@@ -42,7 +52,6 @@ class TestKeywordMatcher(unittest.TestCase):
         self.assertEqual(result.intent, BuyingIntent.DUVIDA_TECNICA)
 
     def test_negative_filters_rejection(self) -> None:
-        # Should be rejected even if "tx race" is mentioned
         title = "Awesome results from the NASCAR TX Race today!"
         content = "The texas race track was wild during the 500 race."
         result = self.matcher.match_text(title, content)
@@ -59,6 +68,50 @@ class TestKeywordMatcher(unittest.TestCase):
         self.assertFalse(result.matched)
         self.assertFalse(result.is_negative_match)
 
+    def test_official_brand_sources_are_rejected(self) -> None:
+        self.assertTrue(
+            self.matcher.is_official_brand_source(
+                "TX RACE", "https://www.youtube.com/watch?v=Egi65jNdJt8", "https://www.youtube.com/@txracecom"
+            )
+        )
+        self.assertTrue(
+            self.matcher.is_official_brand_source(
+                "@txrace", "https://www.tiktok.com/@txrace", "https://www.tiktok.com/@txrace"
+            )
+        )
+        self.assertTrue(
+            self.matcher.is_official_brand_source(
+                "TX RACE Store", "https://www.txrace.com/product/kx250/", "https://www.txrace.com/shop/"
+            )
+        )
+        self.assertFalse(
+            self.matcher.is_official_brand_source(
+                "Chase Builds Bikes",
+                "https://www.youtube.com/watch?v=4GT4yEOszmE",
+                "https://www.youtube.com/@ChaseBuiltBikes",
+            )
+        )
+
+        official_mention = MentionDTO(
+            id="official-1",
+            platform=Platform.YOUTUBE,
+            author="TX RACE",
+            author_url="https://www.youtube.com/@txracecom",
+            title="TX RACE Restyle Kit Gen24 for Kawasaki KX250",
+            content="Official factory release video from TX RACE.",
+            url="https://www.youtube.com/watch?v=Egi65jNdJt8",
+            published_at="2026-11-06T10:00:00Z",
+            scraped_at="2026-11-06T10:05:00Z",
+            model_detected="KX250",
+            brand_detected="Kawasaki",
+            intent=BuyingIntent.GERAL,
+            sentiment=Sentiment.POSITIVE,
+            sentiment_score=0.9,
+            priority_score=80.0,
+            metrics=MentionMetrics(views=3350),
+        )
+        self.assertIsNone(self.matcher.enrich_mention(official_mention))
+
     def test_enrich_mention_lifecycle(self) -> None:
         raw_mention = MentionDTO(
             id="raw-1",
@@ -66,7 +119,7 @@ class TestKeywordMatcher(unittest.TestCase):
             author="MotocrossGuy",
             title="Installed the TX-Race Gen2 kit on my YZ250",
             content="Check out the transformation, before and after build photos inside!",
-            url="https://reddit.com/r/Dirtbikes/comments/123",
+            url="https://www.reddit.com/r/Dirtbikes/comments/123",
             published_at="2026-11-06T10:00:00Z",
             scraped_at="2026-11-06T10:05:00Z",
             model_detected="UNKNOWN",
@@ -89,4 +142,3 @@ class TestKeywordMatcher(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

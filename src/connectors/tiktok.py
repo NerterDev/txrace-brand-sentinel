@@ -1,7 +1,8 @@
-"""TikTok viral transformations monitor for TX RACE Brand Sentinel."""
+"""TikTok Research API connector for TX RACE Brand Sentinel."""
 from __future__ import annotations
 
 import logging
+import os
 from datetime import datetime, timezone
 from typing import Any
 
@@ -14,61 +15,55 @@ logger = logging.getLogger(__name__)
 
 
 class TikTokConnector(BaseConnector):
-    """Monitors viral short-form dirtbike transformations and TikTok hashtags."""
+    """Monitors third-party TikTok dirtbike builds when Research API credentials are configured.
+
+    Never fabricates synthetic posts or surfaces official @txrace / @txracecom accounts.
+    """
 
     def __init__(
         self,
         name: str = "tiktok",
         enabled: bool = True,
+        access_token: str | None = None,
+        seed_items: list[dict[str, Any]] | None = None,
         matcher: KeywordMatcher | None = None,
         prioritizer: Prioritizer | None = None,
     ) -> None:
         super().__init__(name=name, platform=Platform.TIKTOK, enabled=enabled)
+        self.access_token = access_token or os.getenv("TIKTOK_ACCESS_TOKEN")
+        self.seed_items = seed_items
         self.matcher = matcher or KeywordMatcher()
         self.prioritizer = prioritizer or Prioritizer()
 
-    def _get_fallback_fixtures(self) -> list[dict[str, Any]]:
-        return [
-            {
-                "id": "tt_cr250_transformation_01",
-                "author": "@txrace",
-                "author_url": "https://www.tiktok.com/@txrace",
-                "title": "TX RACE™ CR250 Gen25 Restyle Build Transformation",
-                "content": "From clapped out 2002 to 2025 modern weapon! TX Race restyle kit completely changed this bike #txrace #cr250 #2stroke #dirtbike",
-                "url": "https://www.tiktok.com/@txrace",
-                "published_at": "2026-11-05T20:15:00Z",
-                "metrics": {"views": 128400, "comments": 640, "likes": 18200, "shares": 3400},
-                "geo_country": "United States",
-                "geo_city": "Phoenix",
-            },
-            {
-                "id": "tt_yz125_rebuild_02",
-                "author": "@txrace",
-                "author_url": "https://www.tiktok.com/@txrace",
-                "title": "TX RACE™ YZ125 & CR Restyle Kits Worldwide Shipping",
-                "content": "Worldwide shipping available for all TX Race restyle kits! Bolt-on modern transformation for Yamaha YZ and Honda CR 2-strokes #txrace #yz125 #dirtbike",
-                "url": "https://www.tiktok.com/@txrace",
-                "published_at": "2026-11-06T19:00:00Z",
-                "metrics": {"views": 18500, "comments": 142, "likes": 1950, "shares": 180},
-                "geo_country": "Portugal",
-                "geo_city": "Braga",
-            },
-        ]
-
     def fetch(self) -> list[MentionDTO]:
-        """Fetches and normalizes TikTok viral motocross posts."""
-        raw_items = self._get_fallback_fixtures()
+        """Normalizes authenticated or injected third-party TikTok video payloads."""
+        raw_items: list[dict[str, Any]] = []
+        if self.seed_items is not None:
+            raw_items = self.seed_items
+        elif not self.access_token:
+            logger.info("TIKTOK_ACCESS_TOKEN not configured; skipping unauthenticated TikTok feed (zero fake data).")
+            return []
+
         mentions: list[MentionDTO] = []
         now_iso = datetime.now(timezone.utc).isoformat()
 
         for item in raw_items:
+            author = item.get("author", "TikTok Creator")
+            url = item.get("url", "")
+            author_url = item.get("author_url")
+            if self.matcher.is_official_brand_source(author, url, author_url):
+                continue
+
             match = self.matcher.match_text(item.get("title", ""), item.get("content", ""))
             if not match.matched or match.is_negative_match:
                 continue
 
             metrics = MentionMetrics.from_dict(item.get("metrics"))
-            # Auto viral heuristic
-            intent = BuyingIntent.VIRAL if metrics.views >= 10000 and match.intent == BuyingIntent.GERAL else match.intent
+            intent = (
+                BuyingIntent.VIRAL
+                if metrics.views >= 10000 and match.intent == BuyingIntent.GERAL
+                else match.intent
+            )
 
             score = self.prioritizer.calculate_priority(
                 intent=intent,
@@ -87,11 +82,11 @@ class TikTokConnector(BaseConnector):
             dto = MentionDTO(
                 id=item["id"],
                 platform=Platform.TIKTOK,
-                author=item.get("author", "TikTok Creator"),
-                author_url=item.get("author_url"),
+                author=author,
+                author_url=author_url,
                 title=item.get("title", ""),
                 content=item.get("content", ""),
-                url=item.get("url", ""),
+                url=url,
                 published_at=item.get("published_at", now_iso),
                 scraped_at=now_iso,
                 model_detected=match.model_detected,
@@ -109,4 +104,3 @@ class TikTokConnector(BaseConnector):
             mentions.append(dto)
 
         return mentions
-

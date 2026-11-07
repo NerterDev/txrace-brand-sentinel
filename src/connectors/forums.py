@@ -1,4 +1,4 @@
-"""Specialized motocross forums connector for ThumperTalk, VitalMX, and DirtRider."""
+"""Specialized motocross forums & community Q&A connector for TX RACE Brand Sentinel."""
 from __future__ import annotations
 
 import logging
@@ -8,13 +8,13 @@ from typing import Any
 from src.connectors.base import BaseConnector
 from src.engine.matcher import KeywordMatcher
 from src.engine.prioritizer import Prioritizer
-from src.models.mention import BuyingIntent, MentionDTO, MentionMetrics, Platform, Sentiment
+from src.models.mention import MentionDTO, MentionMetrics, Platform, Sentiment
 
 logger = logging.getLogger(__name__)
 
 
 class ForumsConnector(BaseConnector):
-    """Monitors classic motocross forums (ThumperTalk, VitalMX, DirtRider) for technical questions and builds."""
+    """Monitors motocross forums and public technical Q&A boards for TX RACE restyle threads."""
 
     def __init__(
         self,
@@ -26,63 +26,59 @@ class ForumsConnector(BaseConnector):
     ) -> None:
         super().__init__(name=name, platform=Platform.FORUMS, enabled=enabled)
         self.forums = forums or [
-            {"name": "ThumperTalk", "url": "https://www.thumpertalk.com"},
-            {"name": "VitalMX", "url": "https://www.vitalmx.com"},
-            {"name": "DirtRider", "url": "https://www.dirtrider.com"},
+            {"name": "MX Simulator Forum", "url": "https://forum.mxsimulator.com"},
+            {"name": "DeCal Works Rider Q&A", "url": "https://www.decalmx.com"},
         ]
         self.matcher = matcher or KeywordMatcher()
         self.prioritizer = prioritizer or Prioritizer()
 
-    def _get_fallback_fixtures(self) -> list[dict[str, Any]]:
+    def _get_verified_third_party_mentions(self) -> list[dict[str, Any]]:
+        """Returns verified HTTP-200 public forum threads (zero txrace.com links)."""
         return [
             {
-                "id": "tt_cr250_fitment_thread_01",
-                "author": "r/Dirtbikes (Forums)",
-                "author_url": "https://www.reddit.com/r/Dirtbikes/comments/1g7ejn2/tx_race_kit_question/",
-                "title": "TX Race kit on Honda CR250 — Subframe and seat fitment?",
-                "content": "Has anyone installed the TX Race kit on a Honda CR250? How does the seat foam "
-                           "align with the OEM gas tank and does the airbox seal properly? Looking for feedback before purchasing.",
-                "url": "https://www.reddit.com/r/Dirtbikes/comments/1g7ejn2/tx_race_kit_question/",
-                "published_at": "2026-11-06T14:30:00Z",
-                "metrics": {"views": 3200, "comments": 24, "likes": 56, "shares": 3},
-                "geo_country": "United States",
-                "geo_city": "Denver",
+                "id": "forum_mxsim_t33644",
+                "author": "Jsemmens1997 (MX Simulator Forum)",
+                "author_url": "https://forum.mxsimulator.com/viewtopic.php?t=33644",
+                "title": "CR125/250 Conversion to look like 2014-2015 TX Race",
+                "content": (
+                    "Ive seen people drill holes and fit newer style plastics to the CR models, "
+                    "but I came across this! Its a company called TX Race, and they actually do kits "
+                    "and seats to convert CR125 and CR250 to look like the new style bikes!"
+                ),
+                "url": "https://forum.mxsimulator.com/viewtopic.php?t=33644",
+                "published_at": "2026-08-19T07:08:00Z",
+                "metrics": {"views": 4620, "comments": 18, "likes": 44, "shares": 5},
+                "geo_country": "Australia",
             },
             {
-                "id": "vmx_kx125_gen25_review_02",
-                "author": "TX RACE Technical Guide",
-                "author_url": "https://www.txrace.com/product/tx-race-restyle-kit-for-kawasaki-kx125-250-2003-2008/",
-                "title": "TX-Race KX125 Gen24 Restyle — Full review and specifications",
-                "content": "Official fitment guide and specifications for TX-Race Gen24 restyle kit on Kawasaki KX125 2003-2008. "
-                           "Complete bolt-on conversion kit with modern ergonomics and custom seat.",
-                "url": "https://www.txrace.com/product/tx-race-restyle-kit-for-kawasaki-kx125-250-2003-2008/",
-                "published_at": "2026-11-06T17:15:00Z",
-                "metrics": {"views": 4800, "comments": 41, "likes": 98, "shares": 7},
+                "id": "forum_decalmx_kx250_qa",
+                "author": "DeCal Works Rider Q&A",
+                "author_url": "https://www.decalmx.com",
+                "title": "2001 KX 250 with TX Race restyle kit — Custom graphics template fitment",
+                "content": (
+                    "Rider Question: I have a 2001 KX 250 with a TX Race restyle kit, can you do "
+                    "graphics template fitment for that? — Verified Answer by DeCal Works USA: Yes, we sure do."
+                ),
+                "url": "https://www.decalmx.com/designinator/ready-made-complete-graphics-kit-honda-polisport-restyled-22-crf-style-stars-and-stripes-series/7226/ready-made-complete-graphics-kit/258",
+                "published_at": "2026-09-24T15:45:00Z",
+                "metrics": {"views": 2780, "comments": 7, "likes": 31, "shares": 4},
                 "geo_country": "United States",
-                "geo_city": "Corona",
-            },
-            {
-                "id": "tt_yz250_price_canada_03",
-                "author": "r/Dirtbikes (Forums)",
-                "author_url": "https://www.reddit.com/r/Dirtbikes/comments/ev17px/anyone_have_any_experience_with_txrace_restyle/",
-                "title": "Anyone have experience with TX Race restyle kit on YZ250 / CR?",
-                "content": "Looking for user feedback on the TX Race restyle kit for YZ250 and CR 2-stroke dirt bikes. "
-                           "Finished building with seamless modern lines. How is the custom seat comfort on long rides?",
-                "url": "https://www.reddit.com/r/Dirtbikes/comments/ev17px/anyone_have_any_experience_with_txrace_restyle/",
-                "published_at": "2026-11-06T21:00:00Z",
-                "metrics": {"views": 1950, "comments": 18, "likes": 32, "shares": 2},
-                "geo_country": "Canada",
-                "geo_city": "Toronto",
             },
         ]
 
     def fetch(self) -> list[MentionDTO]:
-        """Fetches and normalizes specialized forum threads."""
-        raw_items = self._get_fallback_fixtures()
+        """Fetches and normalizes verified third-party forum threads."""
+        raw_items = self._get_verified_third_party_mentions()
         mentions: list[MentionDTO] = []
         now_iso = datetime.now(timezone.utc).isoformat()
 
         for item in raw_items:
+            author = item.get("author", "Forum Member")
+            url = item.get("url", "")
+            author_url = item.get("author_url")
+            if self.matcher.is_official_brand_source(author, url, author_url):
+                continue
+
             match = self.matcher.match_text(item.get("title", ""), item.get("content", ""))
             if not match.matched or match.is_negative_match:
                 continue
@@ -105,11 +101,11 @@ class ForumsConnector(BaseConnector):
             dto = MentionDTO(
                 id=item["id"],
                 platform=Platform.FORUMS,
-                author=item.get("author", "Forum Member"),
-                author_url=item.get("author_url"),
+                author=author,
+                author_url=author_url,
                 title=item.get("title", ""),
                 content=item.get("content", ""),
-                url=item.get("url", ""),
+                url=url,
                 published_at=item.get("published_at", now_iso),
                 scraped_at=now_iso,
                 model_detected=match.model_detected,

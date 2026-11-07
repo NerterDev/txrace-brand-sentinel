@@ -1,138 +1,263 @@
 {
   "timeline_30d": [
     {
-      "date": "2026-11-04",
+      "date": "2024-09-18",
+      "count": 1,
+      "reach": 3150
+    },
+    {
+      "date": "2024-10-02",
+      "count": 1,
+      "reach": 5200
+    },
+    {
+      "date": "2024-10-19",
+      "count": 1,
+      "reach": 4100
+    },
+    {
+      "date": "2025-01-21",
+      "count": 1,
+      "reach": 1800
+    },
+    {
+      "date": "2025-05-02",
+      "count": 1,
+      "reach": 4850
+    },
+    {
+      "date": "2025-07-30",
+      "count": 1,
+      "reach": 2900
+    },
+    {
+      "date": "2026-04-23",
+      "count": 1,
+      "reach": 2650
+    },
+    {
+      "date": "2026-06-05",
+      "count": 1,
+      "reach": 1800
+    },
+    {
+      "date": "2026-08-14",
+      "count": 1,
+      "reach": 26654
+    },
+    {
+      "date": "2026-08-19",
+      "count": 1,
+      "reach": 4620
+    },
+    {
+      "date": "2026-08-22",
+      "count": 1,
+      "reach": 41023
+    },
+    {
+      "date": "2026-08-28",
+      "count": 1,
+      "reach": 3400
+    },
+    {
+      "date": "2026-09-08",
+      "count": 1,
+      "reach": 17002
+    },
+    {
+      "date": "2026-09-14",
+      "count": 1,
+      "reach": 8400
+    },
+    {
+      "date": "2026-09-18",
+      "count": 1,
+      "reach": 43468
+    },
+    {
+      "date": "2026-09-24",
+      "count": 1,
+      "reach": 2780
+    },
+    {
+      "date": "2026-09-29",
+      "count": 1,
+      "reach": 26677
+    },
+    {
+      "date": "2026-10-03",
+      "count": 1,
+      "reach": 24530
+    },
+    {
+      "date": "2026-10-08",
+      "count": 1,
+      "reach": 5100
+    },
+    {
+      "date": "2026-10-12",
+      "count": 1,
+      "reach": 38988
+    },
+    {
+      "date": "2026-10-14",
+      "count": 1,
+      "reach": 1890
+    },
+    {
+      "date": "2026-10-15",
+      "count": 1,
+      "reach": 6444
+    },
+    {
+      "date": "2026-10-19",
       "count": 2,
-      "reach": 93189
+      "reach": 19802
     },
     {
-      "date": "2026-11-05",
-      "count": 3,
-      "reach": 150250
+      "date": "2026-10-21",
+      "count": 1,
+      "reach": 3850
     },
     {
-      "date": "2026-11-06",
-      "count": 13,
-      "reach": 99950
+      "date": "2026-10-25",
+      "count": 1,
+      "reach": 14969
+    },
+    {
+      "date": "2026-10-27",
+      "count": 1,
+      "reach": 2940
+    },
+    {
+      "date": "2026-10-30",
+      "count": 1,
+      "reach": 730
+    },
+    {
+      "date": "2026-11-01",
+      "count": 1,
+      "reach": 4120
+    },
+    {
+      "date": "2026-11-02",
+      "count": 1,
+      "reach": 9986
+    },
+    {
+      "date": "2026-11-07",
+      "count": 4,
+      "reach": 31346
     }
   ],
   "model_share": [
     {
-      "model": "CR250",
-      "count": 8,
-      "percentage": 44.4
+      "model": "CR125",
+      "count": 11,
+      "percentage": 32.4
     },
     {
-      "model": "CR125",
-      "count": 4,
-      "percentage": 22.2
+      "model": "CR250",
+      "count": 8,
+      "percentage": 23.5
+    },
+    {
+      "model": "KX250",
+      "count": 6,
+      "percentage": 17.6
     },
     {
       "model": "KX125",
       "count": 3,
-      "percentage": 16.7
+      "percentage": 8.8
     },
     {
-      "model": "YZ125",
-      "count": 1,
-      "percentage": 5.6
+      "model": "CRF250R",
+      "count": 3,
+      "percentage": 8.8
     },
     {
-      "model": "KX250",
-      "count": 1,
-      "percentage": 5.6
-    },
-    {
-      "model": "YZ250",
-      "count": 1,
-      "percentage": 5.6
+      "model": "CRF450R",
+      "count": 3,
+      "percentage": 8.8
     }
   ],
   "platform_distribution": [
     {
       "platform": "youtube",
-      "count": 3,
-      "percentage": 16.7
-    },
-    {
-      "platform": "forums",
-      "count": 3,
-      "percentage": 16.7
-    },
-    {
-      "platform": "tiktok",
-      "count": 2,
-      "percentage": 11.1
-    },
-    {
-      "platform": "marketplaces",
-      "count": 2,
-      "percentage": 11.1
-    },
-    {
-      "platform": "facebook",
-      "count": 2,
-      "percentage": 11.1
-    },
-    {
-      "platform": "instagram",
-      "count": 2,
-      "percentage": 11.1
+      "count": 16,
+      "percentage": 47.1
     },
     {
       "platform": "reddit",
-      "count": 2,
-      "percentage": 11.1
+      "count": 9,
+      "percentage": 26.5
     },
     {
-      "platform": "twitter",
-      "count": 1,
-      "percentage": 5.6
+      "platform": "marketplaces",
+      "count": 4,
+      "percentage": 11.8
     },
     {
       "platform": "rss_web",
-      "count": 1,
-      "percentage": 5.6
+      "count": 3,
+      "percentage": 8.8
+    },
+    {
+      "platform": "forums",
+      "count": 2,
+      "percentage": 5.9
     }
   ],
   "intent_distribution": [
     {
       "intent": "PROJETO_BUILD",
-      "count": 13,
-      "percentage": 72.2
+      "count": 19,
+      "percentage": 55.9
     },
     {
       "intent": "COMPRA_ATIVA",
-      "count": 4,
-      "percentage": 22.2
+      "count": 8,
+      "percentage": 23.5
     },
     {
       "intent": "DUVIDA_TECNICA",
-      "count": 1,
-      "percentage": 5.6
+      "count": 4,
+      "percentage": 11.8
+    },
+    {
+      "intent": "GERAL",
+      "count": 3,
+      "percentage": 8.8
     }
   ],
   "geo_distribution": [
     {
       "country": "United States",
-      "count": 10,
-      "percentage": 55.6
+      "count": 25,
+      "percentage": 73.5
     },
     {
-      "country": "Spain",
-      "count": 6,
-      "percentage": 33.3
+      "country": "Australia",
+      "count": 2,
+      "percentage": 5.9
     },
     {
       "country": "Portugal",
       "count": 1,
-      "percentage": 5.6
+      "percentage": 2.9
     },
     {
-      "country": "Canada",
+      "country": "Spain",
       "count": 1,
-      "percentage": 5.6
+      "percentage": 2.9
+    },
+    {
+      "country": "France",
+      "count": 1,
+      "percentage": 2.9
     }
   ],
-  "generated_at": "2026-11-07T10:59:10.570433+00:00"
+  "generated_at": "2026-11-07T12:35:38.079034+00:00"
 }

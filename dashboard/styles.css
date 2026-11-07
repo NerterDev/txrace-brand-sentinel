@@ -241,6 +241,11 @@ html, body {
   border-color: var(--border-hover);
 }
 
+.btn svg {
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
 .btn-ghost {
   background-color: transparent;
   color: var(--text-secondary);
@@ -250,6 +255,20 @@ html, body {
 .btn-ghost:hover:not(:disabled) {
   background-color: var(--bg-elevation);
   color: var(--text-primary);
+}
+
+.btn-open-post {
+  background-color: rgba(59, 130, 246, 0.08);
+  color: var(--text-primary);
+  border-color: var(--border-card);
+  position: relative;
+  z-index: 2;
+}
+
+.btn-open-post:hover:not(:disabled) {
+  background-color: rgba(59, 130, 246, 0.18);
+  border-color: var(--border-focus);
+  color: #FFFFFF;
 }
 
 .btn:disabled {
@@ -366,7 +385,7 @@ html, body {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-inner);
-  padding: 2px;
+  padding: 4px;
 }
 
 .tab-btn {
@@ -633,7 +652,7 @@ html, body {
   background-color: var(--bg-elevation);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-inner);
-  padding: 2px 6px;
+  padding: 4px 8px;
   font-size: 11px;
   font-weight: 600;
   text-transform: capitalize;
@@ -684,7 +703,7 @@ html, body {
   gap: 4px;
   font-size: 11px;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 4px 8px;
   border-radius: var(--radius-inner);
   color: #FFFFFF;
 }
@@ -701,7 +720,7 @@ html, body {
   color: var(--text-secondary);
   font-size: 11px;
   font-weight: 600;
-  padding: 2px 6px;
+  padding: 4px 8px;
   border-radius: var(--radius-inner);
 }
 
@@ -711,7 +730,7 @@ html, body {
   gap: 4px;
   font-size: 11px;
   font-weight: 600;
-  padding: 2px 8px;
+  padding: 4px 8px;
   border-radius: var(--radius-inner);
 }
 

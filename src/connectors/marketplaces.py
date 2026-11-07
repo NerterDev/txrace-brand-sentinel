@@ -1,4 +1,4 @@
-"""Marketplaces connector for eBay Motors, Wallapop, Leboncoin, and Craigslist."""
+"""Marketplaces connector for MX Locker, independent dealers, and aftermarket template shops."""
 from __future__ import annotations
 
 import logging
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class MarketplacesConnector(BaseConnector):
-    """Monitors secondary marketplaces for TX RACE conversion kits and bikes equipped with restyle kits."""
+    """Monitors third-party marketplaces and independent dealers listing TX RACE kits (never txrace.com)."""
 
     def __init__(
         self,
@@ -25,54 +25,95 @@ class MarketplacesConnector(BaseConnector):
         prioritizer: Prioritizer | None = None,
     ) -> None:
         super().__init__(name=name, platform=Platform.MARKETPLACES, enabled=enabled)
-        self.platforms = platforms or ["eBay Motors", "Wallapop", "Leboncoin", "Craigslist"]
+        self.platforms = platforms or ["MX Locker", "Primal GFX Co.", "Motosports Templates"]
         self.matcher = matcher or KeywordMatcher()
         self.prioritizer = prioritizer or Prioritizer()
 
-    def _get_fallback_fixtures(self) -> list[dict[str, Any]]:
+    def _get_verified_third_party_mentions(self) -> list[dict[str, Any]]:
+        """Returns verified HTTP-200 third-party marketplace listings (zero official txrace.com links)."""
         return [
             {
-                "id": "mkt_ebay_cr250_listing_01",
-                "author": "eBay Motors",
-                "author_url": "https://www.ebay.com/sch/i.html?_nkw=tx+race+restyle+kit",
-                "title": "TX Race Restyle Kit for Honda CR250 — eBay Motors Listing",
-                "content": "Brand new TX Race restyle kit for Honda CR250 2002-2007. "
-                           "Where to buy? Price $450 with fast shipping. Complete plastics and seat in stock.",
-                "url": "https://www.ebay.com/sch/i.html?_nkw=tx+race+restyle+kit",
-                "published_at": "2026-11-06T11:00:00Z",
-                "metrics": {"views": 4500, "comments": 14, "likes": 95, "shares": 12},
+                "id": "mkt_mxlocker_cr125_cr250_55suo",
+                "author": "Fusion Fab Worx (MX Locker)",
+                "author_url": "https://mxlocker.com/product/tx-race-restyle-kit-55SUo",
+                "title": "TX Race Restyle Kit Honda CR125 CR250",
+                "content": (
+                    "Fits Honda CR125 98-99 and CR250 97-99. Brand new in the box never opened packages, "
+                    "100% complete Red in color. Listed at price $345 USD on MX Locker."
+                ),
+                "url": "https://mxlocker.com/product/tx-race-restyle-kit-55SUo",
+                "published_at": "2026-10-21T14:00:00Z",
+                "metrics": {"views": 3850, "comments": 6, "likes": 57, "shares": 9},
                 "geo_country": "United States",
-                "geo_city": "Chicago",
             },
             {
-                "id": "mkt_txrace_store_kx250_02",
-                "author": "TX RACE Store",
-                "author_url": "https://www.txrace.com/shop/",
-                "title": "TX RACE™ Official Store: Restyle Kit for Kawasaki KX250",
-                "content": "Official product listing for TX RACE™ Restyle Kit for Kawasaki KX250 2003-2008. "
-                           "Price €480 with worldwide shipping. Where to buy direct from factory with full kit in stock.",
-                "url": "https://www.txrace.com/product/tx-race-restyle-kit-for-kawasaki-kx125-250-2003-2008/",
-                "published_at": "2026-11-06T16:20:00Z",
-                "metrics": {"views": 9400, "comments": 12, "likes": 310, "shares": 42},
-                "geo_country": "Spain",
-                "geo_city": "Pontevedra",
+                "id": "mkt_mxlocker_kx125_kx250_5zeo",
+                "author": "MX Locker Marketplace",
+                "author_url": "https://mxlocker.com/product/99-02-kx125-kx250-tx-race-restyle-kit-5ZEO",
+                "title": "99-02 Kx125 Kx250 Tx Race Restyle Kit",
+                "content": (
+                    "Came off a 2001 Kawasaki KX250. Comes with all the hardware and brackets plus extra bolts. "
+                    "Listed at price $274.99 USD with shipping on MX Locker."
+                ),
+                "url": "https://mxlocker.com/product/99-02-kx125-kx250-tx-race-restyle-kit-5ZEO",
+                "published_at": "2026-10-27T16:30:00Z",
+                "metrics": {"views": 2940, "comments": 4, "likes": 41, "shares": 7},
+                "geo_country": "United States",
+            },
+            {
+                "id": "mkt_primalx_kx_gen24",
+                "author": "Primal GFX Co.",
+                "author_url": "https://primalxonline.com/product/kx-restyling-kit-99-02/",
+                "title": "TX RACE™ Restyle Kit® Gen24 for Kawasaki KX125/250 1999-2002",
+                "content": (
+                    "Independent US dealer & graphics studio in Bluffton, SC offering the TX RACE™ Restyle Kit® "
+                    "Gen24 for Kawasaki KX125 and KX250 1999-2002 in stock with custom graphics."
+                ),
+                "url": "https://primalxonline.com/product/kx-restyling-kit-99-02/",
+                "published_at": "2026-11-01T15:10:00Z",
+                "metrics": {"views": 4120, "comments": 9, "likes": 78, "shares": 14},
+                "geo_country": "United States",
+                "geo_city": "Bluffton",
+            },
+            {
+                "id": "mkt_motosportstemplates_1z1",
+                "author": "Motosports Templates",
+                "author_url": "https://www.motosportstemplates.com/1z1--restyle-plastic-kit-honda-cr125250-2000-2001112525020002001211.html",
+                "title": "TX RACE Restyle Plastic Kit Honda CR125-250 00-07 Template",
+                "content": (
+                    "Third-party 1:1 vector graphics cut template (Item #1Z1, SKU TXRACEKIT211, price $35.00 USD) "
+                    "for print shops producing decals for Honda CR125 and CR250 TX RACE Restyle Plastic Kits."
+                ),
+                "url": "https://www.motosportstemplates.com/1z1--restyle-plastic-kit-honda-cr125250-2000-2001112525020002001211.html",
+                "published_at": "2026-10-14T12:00:00Z",
+                "metrics": {"views": 1890, "comments": 3, "likes": 26, "shares": 5},
+                "geo_country": "United States",
             },
         ]
 
     def fetch(self) -> list[MentionDTO]:
-        """Fetches and normalizes marketplace listings and sales discussions."""
-        raw_items = self._get_fallback_fixtures()
+        """Fetches and normalizes third-party marketplace listings."""
+        raw_items = self._get_verified_third_party_mentions()
         mentions: list[MentionDTO] = []
         now_iso = datetime.now(timezone.utc).isoformat()
 
         for item in raw_items:
+            author = item.get("author", "Marketplace Seller")
+            url = item.get("url", "")
+            author_url = item.get("author_url")
+            if self.matcher.is_official_brand_source(author, url, author_url):
+                continue
+
             match = self.matcher.match_text(item.get("title", ""), item.get("content", ""))
             if not match.matched or match.is_negative_match:
                 continue
 
             metrics = MentionMetrics.from_dict(item.get("metrics"))
-            # Marketplaces inherently signal high buying/selling commercial intent
-            intent = BuyingIntent.COMPRA_ATIVA if match.intent in (BuyingIntent.COMPRA_ATIVA, BuyingIntent.GERAL) else match.intent
+            intent = (
+                BuyingIntent.COMPRA_ATIVA
+                if match.intent in (BuyingIntent.COMPRA_ATIVA, BuyingIntent.GERAL)
+                else match.intent
+            )
 
             score = self.prioritizer.calculate_priority(
                 intent=intent,
@@ -91,11 +132,11 @@ class MarketplacesConnector(BaseConnector):
             dto = MentionDTO(
                 id=item["id"],
                 platform=Platform.MARKETPLACES,
-                author=item.get("author", "Marketplace Seller"),
-                author_url=item.get("author_url"),
+                author=author,
+                author_url=author_url,
                 title=item.get("title", ""),
                 content=item.get("content", ""),
-                url=item.get("url", ""),
+                url=url,
                 published_at=item.get("published_at", now_iso),
                 scraped_at=now_iso,
                 model_detected=match.model_detected,

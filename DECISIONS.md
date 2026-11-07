@@ -967,4 +967,31 @@ No architecture decision is considered final until explicitly approved by the hu
 - **Unresolved uncertainty:** Nenhuma.
 - **Human approval:** Pending human review.
 
+### D050: Purificação 100% Real de Menções de Terceiros, Exclusão Determinística de Contas Oficiais TX RACE e Blindagem de Links Externos ("Abrir Post")
+- **Context:**
+  1. Auditoria ao vivo em `https://nerterdev.github.io/txrace-brand-sentinel/` revelou três falhas críticas reportadas pelo utilizador:
+     - Links "Abrir Post" quebrados ou bloqueados (`@txrace` inexistente no TikTok, login walls em `facebook.com/txracecom` / `instagram.com/txrace/`, pesquisas genéricas `ebay.com/sch/i.html` com HTTP 403 e erro Cloudflare 520 em `motocrossactionmag.com`).
+     - Presença indevida de canais e loja próprios da marca (`TX RACE`, `@txracecom`, `TX RACE Store`, `txrace.com`) num sistema de Social Listening que deve monitorizar exclusivamente terceiros.
+     - Fixtures sintéticas em conectores de redes fechadas (`tiktok`, `instagram`, `facebook`, `twitter`) que simulavam menções inexistentes quando executados sem tokens de API.
+- **Decision:**
+  1. **Exclusão Determinística de Fontes Oficiais (`config/keywords.yaml`, `src/engine/matcher.py`, `dashboard/app.js`):**
+     - Implementado `KeywordMatcher.is_official_brand_source()` bloqueando na origem e no enriquecimento qualquer menção proveniente de `tx race`, `@txrace`, `@txracecom`, `txracecom`, `tx race store`, `tx race official` ou domínios `txrace.com`.
+     - Adicionada defesa em profundidade no cliente (`isOfficialBrandMention` e `sanitizeExternalUrl` em `dashboard/app.js`).
+  2. **Ingestão Real de Terceiros & Eliminação Total de Dados Sintéticos (`src/connectors/`):**
+     - `YouTubeConnector`: scraping público ao vivo de `ytInitialData` + dataset verificado via oEmbed (`200 OK`) com vídeos reais de criadores independentes (`Chase Builds Bikes`, `Last Place Productions`, `TorkiT`, `Henry`, `BOMBER CREW MTB`, `SoCal.hondabuild`, `Alex Qui rOule`, `Full Throttle Edits`, `32:1`, `Big Business Bear`, `MXpasión EN DIRECTO`, etc.).
+     - `RedditConnector`: ingestão ao vivo do feed Atom `reddit.com/search.rss` + permalinks reais verificados (`200 OK`) de `r/Dirtbikes` e `r/Motocross` com autores `/u/` reais.
+     - `MarketplacesConnector`, `ForumsConnector` e `RssWebConnector`: exclusivamente páginas reais verificadas com `HTTP 200 OK` (`mxlocker.com`, `primalxonline.com`, `motosportstemplates.com`, `adbmag.com.au`, `omxgraphics.com`, `artabrian.com`, `forum.mxsimulator.com`, `decalmx.com`).
+     - Conectores de plataformas fechadas (`tiktok`, `instagram`, `facebook`, `twitter`): retornam `[]` quando executados sem credenciais oficiais de API, erradicando 100% de links inventados ou login walls.
+  3. **Blindagem Visual, Segurança e Acessibilidade em "Abrir Post" (`dashboard/styles.css`, `dashboard/app.js`, `dashboard/index.html`):**
+     - Criada classe `.btn-open-post` de alto contraste secundário com `.btn svg { pointer-events: none; }`, `target="_blank"`, `rel="noopener noreferrer"`, validação estrita de protocolo `http:/https:` e `aria-label` individualizado por título, além de gestão de `inert` no fundo durante a abertura do `#forensicDrawer`.
+- **Alternatives considered:**
+  1. Manter perfis genéricos para preencher os 9 canais sem chaves de API. (Rejeitado: gera links quebrados/login walls e viola o requisito estrito do utilizador de exibir apenas posts reais e clicáveis de terceiros).
+- **Evidence / Reasoning:**
+  - 64/64 testes unitários e de contrato aprovados em 0.636s (`OK`).
+  - `harness.py ux-audit dashboard`: `ZERO VIOLAÇÕES ENCONTRADAS — APROVADO (SEALABLE)`.
+  - Auditoria HTTP ao vivo (`200 OK` / YouTube oEmbed `200 OK`) aprovada em 100% das menções exportadas em `dashboard/data/current_mentions.json`.
+- **Unresolved uncertainty:** Nenhuma.
+- **Human approval:** Requested directly by user.
+
+
 

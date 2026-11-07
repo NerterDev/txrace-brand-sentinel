@@ -13,7 +13,7 @@
   <!-- ========================================================================
        HEADER & TELEMETRY STRIP (Fixed 1 Primary CTA per UX Contract)
        ======================================================================== -->
-  <header class="sentinel-header" role="banner">
+  <header id="sentinelHeader" class="sentinel-header" role="banner">
     <div class="header-container">
       <div class="header-brand">
         <div class="brand-icon-wrapper" aria-hidden="true">
@@ -87,7 +87,7 @@
         </svg>
         <span><strong>Aviso de Degradação Parcial:</strong> Algumas fontes secundárias estão em modo de contingência offline.</span>
       </div>
-      <button class="btn btn-ghost" id="btnDismissDegraded" style="min-height: 24px; padding: 2px 6px;">Dispensar</button>
+      <button class="btn btn-ghost" id="btnDismissDegraded" style="min-height: 24px; padding: 4px 8px;">Dispensar</button>
     </div>
 
     <!-- ======================================================================
@@ -244,6 +244,7 @@
         <option value="CR125">Honda CR125</option>
         <option value="CR250">Honda CR250</option>
         <option value="CR500">Honda CR500</option>
+        <option value="CRF250R">Honda CRF250R</option>
         <option value="CRF250X">Honda CRF250X</option>
         <option value="CRF450R">Honda CRF450R</option>
         <option value="KX125">Kawasaki KX125</option>
@@ -478,7 +479,7 @@
       <section class="forensic-section">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span class="section-label">Conteúdo Original da Publicação</span>
-          <button id="btnTranslateToggle" class="btn btn-ghost" style="min-height: 24px; padding: 2px 8px; font-size: 11px;">
+          <button id="btnTranslateToggle" class="btn btn-ghost" style="min-height: 24px; padding: 4px 8px; font-size: 11px;">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M5 8l6 6M4 14l6-6 2-3M2 5h12M7 2h1"></path>
               <path d="M22 22l-5-10-5 10M14 18h6"></path>
@@ -502,7 +503,7 @@
       <section class="forensic-section">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span class="section-label">Resposta Comercial Recomendada</span>
-          <button id="btnCopyReply" class="btn btn-secondary" style="min-height: 28px; padding: 2px 10px; font-size: 12px;">
+          <button id="btnCopyReply" class="btn btn-secondary" style="min-height: 28px; padding: 4px 12px; font-size: 12px;">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -528,8 +529,8 @@
     </div>
 
     <div class="drawer-footer">
-      <a id="drawerExternalLink" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <a id="drawerExternalLink" class="btn btn-primary" href="https://www.youtube.com/watch?v=4GT4yEOszmE" target="_blank" rel="noopener noreferrer">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
           <polyline points="15 3 21 3 21 9"></polyline>
           <line x1="10" y1="14" x2="21" y2="3"></line>

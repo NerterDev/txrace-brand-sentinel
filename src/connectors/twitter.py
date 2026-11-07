@@ -1,56 +1,59 @@
-"""X / Twitter and Nitter RSS connector for TX RACE Brand Sentinel."""
+"""X / Twitter API v2 connector for TX RACE Brand Sentinel."""
 from __future__ import annotations
 
 import logging
+import os
 from datetime import datetime, timezone
 from typing import Any
 
 from src.connectors.base import BaseConnector
 from src.engine.matcher import KeywordMatcher
 from src.engine.prioritizer import Prioritizer
-from src.models.mention import BuyingIntent, MentionDTO, MentionMetrics, Platform, Sentiment
+from src.models.mention import MentionDTO, MentionMetrics, Platform, Sentiment
 
 logger = logging.getLogger(__name__)
 
 
 class TwitterConnector(BaseConnector):
-    """Monitors X / Twitter micro-posts, retweets, and hashtag chatter."""
+    """Monitors third-party X / Twitter micro-posts when API v2 credentials are configured.
+
+    Never fabricates synthetic posts or surfaces official @txrace accounts.
+    """
 
     def __init__(
         self,
         name: str = "twitter",
         enabled: bool = True,
+        bearer_token: str | None = None,
+        seed_items: list[dict[str, Any]] | None = None,
         matcher: KeywordMatcher | None = None,
         prioritizer: Prioritizer | None = None,
     ) -> None:
         super().__init__(name=name, platform=Platform.TWITTER, enabled=enabled)
+        self.bearer_token = bearer_token or os.getenv("TWITTER_BEARER_TOKEN")
+        self.seed_items = seed_items
         self.matcher = matcher or KeywordMatcher()
         self.prioritizer = prioritizer or Prioritizer()
 
-    def _get_fallback_fixtures(self) -> list[dict[str, Any]]:
-        return [
-            {
-                "id": "tw_txrace_official_01",
-                "author": "@txrace",
-                "author_url": "https://x.com/txrace",
-                "title": "TX RACE™ Official on X: 2-Stroke Restyle Kits & Releases",
-                "content": "Official updates from TX RACE on X. Showcasing our Gen24 and Gen25 bolt-on restyle kits "
-                           "for Honda CR125/250 and Kawasaki KX models. 2-strokes will never die! #txrace #cr125 #cr250",
-                "url": "https://x.com/txrace",
-                "published_at": "2026-11-06T18:45:00Z",
-                "metrics": {"views": 16400, "comments": 22, "likes": 540, "shares": 68},
-                "geo_country": "Spain",
-                "geo_city": "Pontevedra",
-            },
-        ]
-
     def fetch(self) -> list[MentionDTO]:
-        """Fetches and normalizes tweets."""
-        raw_items = self._get_fallback_fixtures()
+        """Normalizes authenticated or injected third-party X posts."""
+        raw_items: list[dict[str, Any]] = []
+        if self.seed_items is not None:
+            raw_items = self.seed_items
+        elif not self.bearer_token:
+            logger.info("TWITTER_BEARER_TOKEN not configured; skipping unauthenticated X feed.")
+            return []
+
         mentions: list[MentionDTO] = []
         now_iso = datetime.now(timezone.utc).isoformat()
 
         for item in raw_items:
+            author = item.get("author", "X User")
+            url = item.get("url", "")
+            author_url = item.get("author_url")
+            if self.matcher.is_official_brand_source(author, url, author_url):
+                continue
+
             match = self.matcher.match_text(item.get("title", ""), item.get("content", ""))
             if not match.matched or match.is_negative_match:
                 continue
@@ -73,11 +76,11 @@ class TwitterConnector(BaseConnector):
             dto = MentionDTO(
                 id=item["id"],
                 platform=Platform.TWITTER,
-                author=item.get("author", "X User"),
-                author_url=item.get("author_url"),
+                author=author,
+                author_url=author_url,
                 title=item.get("title", ""),
                 content=item.get("content", ""),
-                url=item.get("url", ""),
+                url=url,
                 published_at=item.get("published_at", now_iso),
                 scraped_at=now_iso,
                 model_detected=match.model_detected,

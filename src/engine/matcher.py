@@ -5,6 +5,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 import yaml
 
@@ -85,6 +86,68 @@ class KeywordMatcher:
             except ValueError:
                 continue
 
+        # 6. Official brand source exclusions (strictly third-party listening)
+        default_excluded_authors = [
+            "tx race",
+            "txrace",
+            "tx-race",
+            "@txrace",
+            "@txracecom",
+            "txracecom",
+            "tx race official",
+            "tx race official (@txracecom)",
+            "tx race store",
+            "tx race technical guide",
+            "baudea global",
+        ]
+        raw_excluded_authors = self.config.get("excluded_authors", default_excluded_authors)
+        self.excluded_authors: set[str] = {
+            str(a).strip().lower() for a in raw_excluded_authors if a
+        }
+
+        default_excluded_domains = ["txrace.com", "www.txrace.com"]
+        raw_excluded_domains = self.config.get("excluded_domains", default_excluded_domains)
+        self.excluded_domains: set[str] = {
+            str(d).strip().lower() for d in raw_excluded_domains if d
+        }
+
+    def is_official_brand_source(
+        self,
+        author: str,
+        url: str,
+        author_url: str | None = None,
+    ) -> bool:
+        """Returns True if a mention originates from TX RACE's own official channels or website."""
+        norm_author = (author or "").strip().lower()
+        norm_handle = norm_author.lstrip("@").strip()
+
+        if norm_author in self.excluded_authors or norm_handle in self.excluded_authors:
+            return True
+
+        # Catch composite official labels like "TX RACE Official (@txracecom)"
+        if "txracecom" in norm_author or norm_author.startswith("tx race official") or norm_author.startswith("tx race store"):
+            return True
+
+        for candidate_url in (url, author_url):
+            if not candidate_url:
+                continue
+            try:
+                parsed = urlparse(candidate_url.strip())
+                host = (parsed.hostname or "").lower()
+                path_lower = (parsed.path or "").lower()
+            except ValueError:
+                continue
+
+            if host in self.excluded_domains or host.endswith(".txrace.com"):
+                return True
+
+            # Catch official social profile URLs
+            for official_slug in ("/@txracecom", "/txracecom", "/@txrace", "/txrace"):
+                if path_lower == official_slug or path_lower.startswith(official_slug + "/"):
+                    return True
+
+        return False
+
     def match_text(self, title: str, content: str) -> MatchResult:
         """Evaluates combined title and content against rules and filters."""
         combined_text = f"{title} {content}".lower()
@@ -154,6 +217,9 @@ class KeywordMatcher:
 
     def enrich_mention(self, mention: MentionDTO) -> MentionDTO | None:
         """Enriches an existing MentionDTO with semantic extracted metadata or drops if invalid."""
+        if self.is_official_brand_source(mention.author, mention.url, mention.author_url):
+            return None
+
         res = self.match_text(mention.title, mention.content)
         if not res.matched or res.is_negative_match:
             return None

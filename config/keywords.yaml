@@ -21,10 +21,12 @@ models:
         aliases: ["cr 250", "cr250r", "cr 250r"]
       - id: "CR500"
         aliases: ["cr 500", "cr500r"]
+      - id: "CRF250R"
+        aliases: ["crf 250r", "crf250 r", "crf250", "crf 250"]
       - id: "CRF250X"
         aliases: ["crf 250x", "crf250 x"]
       - id: "CRF450R"
-        aliases: ["crf 450r", "crf450 r"]
+        aliases: ["crf 450r", "crf450 r", "crf450", "crf 450"]
   kawasaki:
     brand: "Kawasaki"
     color: "#16A34A"
@@ -89,7 +91,8 @@ intents:
       - "transformacao"
       - "rebuild"
       - "restoration"
-      - "restyle"
+      - "installed"
+      - "install"
       - "build"
       - "project bike"
       - "before and after"
@@ -128,4 +131,23 @@ negative_filters:
   - "marathon tx race"
   - "f1 texas race"
   - "indycar texas"
+
+# Self-brand exclusion rules (Social Listening monitors third-party mentions only)
+excluded_authors:
+  - "tx race"
+  - "txrace"
+  - "tx-race"
+  - "@txrace"
+  - "@txracecom"
+  - "txracecom"
+  - "tx race official"
+  - "tx race official (@txracecom)"
+  - "tx race store"
+  - "tx race technical guide"
+  - "baudea global"
+
+excluded_domains:
+  - "txrace.com"
+  - "www.txrace.com"
+
 

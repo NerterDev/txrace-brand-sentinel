@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -68,16 +69,21 @@ class SentinelOrchestrator:
             len(results),
         )
 
-        # Step 2: Semantic enrichment & negative filter validation
+        # Step 2: Semantic enrichment, brand self-exclusion & URL deduplication
         enriched_mentions: list[MentionDTO] = []
+        seen_urls: set[str] = set()
         for m in raw_mentions:
+            norm_url = (m.url or "").strip().rstrip("/").lower()
+            if not norm_url or norm_url in seen_urls:
+                continue
             enriched = self.matcher.enrich_mention(m)
             if enriched:
+                seen_urls.add(norm_url)
                 # Add calculated priority score and response if missing or default
                 final_mention = self.prioritizer.enrich(enriched)
                 enriched_mentions.append(final_mention)
             else:
-                logger.debug("Mention %s discarded by negative or brand filter.", m.id)
+                logger.debug("Mention %s discarded by official-brand, negative, or brand filter.", m.id)
 
         # Step 3: Deduplication and persistence
         if dry_run:
@@ -151,6 +157,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Execute collection and matching without writing files or mutating SQLite cache",
     )
     parser.add_argument(
+        "--offline",
+        action="store_true",
+        help="Disable live HTTP scraping during CLI execution (use verified snapshot baseline only)",
+    )
+    parser.add_argument(
         "-v",
         "--verbose",
         action="store_true",
@@ -158,6 +169,9 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     args = parser.parse_args(argv)
+
+    if not args.offline and not args.dry_run:
+        os.environ.setdefault("SENTINEL_LIVE_NETWORK", "1")
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,

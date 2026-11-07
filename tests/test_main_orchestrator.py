@@ -1,4 +1,5 @@
 """Deterministic unit and integration tests for SentinelOrchestrator and GitOps workflow."""
+import json
 import shutil
 import tempfile
 import unittest
@@ -18,7 +19,7 @@ class TestMainOrchestrator(unittest.TestCase):
     def tearDown(self) -> None:
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
-    def test_orchestrator_full_cycle(self) -> None:
+    def test_orchestrator_full_cycle_exports_only_real_third_party_mentions(self) -> None:
         orchestrator = SentinelOrchestrator(
             sources_config_path="config/sources.yaml",
             keywords_config_path="config/keywords.yaml",
@@ -30,15 +31,24 @@ class TestMainOrchestrator(unittest.TestCase):
         )
 
         self.assertEqual(summary["status"], "success")
-        self.assertGreaterEqual(summary["total_collected"], 18)
-        self.assertGreaterEqual(summary["total_enriched"], 18)
+        self.assertGreaterEqual(summary["total_collected"], 25)
+        self.assertGreaterEqual(summary["total_enriched"], 25)
         self.assertGreaterEqual(summary["connectors_executed"], 9)
 
-        # Confirm exported files
-        self.assertTrue((self.output_dir / "current_mentions.json").exists())
+        mentions_file = self.output_dir / "current_mentions.json"
+        self.assertTrue(mentions_file.exists())
         self.assertTrue((self.output_dir / "kpis.json").exists())
         self.assertTrue((self.output_dir / "analytics.json").exists())
         self.assertTrue(self.db_path.exists())
+
+        payload = json.loads(mentions_file.read_text(encoding="utf-8"))
+        urls = [m["url"] for m in payload["mentions"]]
+        self.assertEqual(len(urls), len(set(urls)), "Duplicate post URLs found in current_mentions.json")
+        for m in payload["mentions"]:
+            self.assertFalse(
+                orchestrator.matcher.is_official_brand_source(m["author"], m["url"], m.get("author_url")),
+                f"Official TX RACE mention leaked into export: {m['author']} ({m['url']})",
+            )
 
     def test_orchestrator_dry_run_does_not_write_files(self) -> None:
         dry_out = Path(self.temp_dir) / "dry_data"
@@ -59,6 +69,7 @@ class TestMainOrchestrator(unittest.TestCase):
         exit_code = main([
             "--output-dir", str(self.output_dir),
             "--db-path", str(self.db_path),
+            "--offline",
             "--dry-run",
         ])
         self.assertEqual(exit_code, 0)
@@ -70,23 +81,18 @@ class TestMainOrchestrator(unittest.TestCase):
         content = workflow_file.read_text(encoding="utf-8")
         parsed = yaml.safe_load(content)
 
-        # Check triggers
-        # In PyYAML, 'on' key is parsed as True or 'on'
         triggers = parsed.get("on") or parsed.get(True)
         self.assertIsNotNone(triggers)
         self.assertIn("schedule", triggers)
         self.assertIn("workflow_dispatch", triggers)
 
-        # Check 4-hour cron schedule
         cron_expression = triggers["schedule"][0]["cron"]
         self.assertEqual(cron_expression, "0 */4 * * *")
 
-        # Check jobs
         jobs = parsed.get("jobs", {})
         self.assertIn("radar_scan", jobs)
         self.assertIn("deploy_pages", jobs)
 
-        # Check pages deployment environment
         deploy_job = jobs["deploy_pages"]
         self.assertEqual(deploy_job["environment"]["name"], "github-pages")
 

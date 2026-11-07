@@ -57,3 +57,7 @@ ehthumbs.db
 *.swp
 *~
 
+# Local Harness Time Machine snapshot archives
+.harness/snapshots/
+
+

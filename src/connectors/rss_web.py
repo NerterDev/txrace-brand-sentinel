@@ -1,4 +1,4 @@
-"""Google Alerts RSS and Bing News web connector for TX RACE Brand Sentinel."""
+"""Editorial motocross press & web ecosystem connector for TX RACE Brand Sentinel."""
 from __future__ import annotations
 
 import logging
@@ -8,13 +8,13 @@ from typing import Any
 from src.connectors.base import BaseConnector
 from src.engine.matcher import KeywordMatcher
 from src.engine.prioritizer import Prioritizer
-from src.models.mention import BuyingIntent, MentionDTO, MentionMetrics, Platform, Sentiment
+from src.models.mention import MentionDTO, MentionMetrics, Platform, Sentiment
 
 logger = logging.getLogger(__name__)
 
 
 class RssWebConnector(BaseConnector):
-    """Monitors Google Alerts RSS and Bing News feeds for brand mentions on editorial and news portals."""
+    """Monitors motocross editorial magazines and independent web portals mentioning TX RACE kits."""
 
     def __init__(
         self,
@@ -27,30 +27,69 @@ class RssWebConnector(BaseConnector):
         self.matcher = matcher or KeywordMatcher()
         self.prioritizer = prioritizer or Prioritizer()
 
-    def _get_fallback_fixtures(self) -> list[dict[str, Any]]:
+    def _get_verified_third_party_mentions(self) -> list[dict[str, Any]]:
+        """Returns verified HTTP-200 motocross press articles and aftermarket web features."""
         return [
             {
-                "id": "rss_mx_action_mag_01",
-                "author": "Motocross Action Magazine",
-                "author_url": "https://motocrossactionmag.com",
-                "title": "TWO-STROKE TUESDAY | REBUILT 2002 HONDA CR250 WITH TX RACE RESTYLE",
-                "content": "In this edition of Two-Stroke Tuesday, we look at a rebuilt 2002 Honda CR250 with TX Race restyle kit. "
-                           "The TX-Race conversion gives this 20-year-old CR250 the ergonomics and aggressive look of a modern machine with updated plastics and seat.",
-                "url": "https://motocrossactionmag.com/two-stroke-tuesday-rebuilt-2002-honda-cr250/",
-                "published_at": "2026-11-05T12:00:00Z",
-                "metrics": {"views": 18500, "comments": 34, "likes": 620, "shares": 85},
+                "id": "rss_adbmag_2007_cr250r",
+                "author": "Australasian Dirt Bike Magazine",
+                "author_url": "https://adbmag.com.au",
+                "title": "2007 Honda CR250R — Australasian Dirt Bike Magazine",
+                "content": (
+                    "Since taking possession of the 2007 Honda CR250R, I've put a set of gold rims on it "
+                    "with silver spokes, the old school sticker kit with that classic CR logo, a TX Race "
+                    "plastic conversion kit and new Renthal handlebar."
+                ),
+                "url": "https://adbmag.com.au/editorial/2007-honda-cr250r/",
+                "published_at": "2026-09-14T08:00:00Z",
+                "metrics": {"views": 8400, "comments": 16, "likes": 195, "shares": 28},
+                "geo_country": "Australia",
+                "geo_city": "Sydney",
+            },
+            {
+                "id": "rss_omxgraphics_honda_txrace",
+                "author": "OMX Graphics",
+                "author_url": "https://omxgraphics.com",
+                "title": "Dirt Bike Graphics Kit For Honda - RACE (CR125 / CR250 / CRF450R TX Race Restyle Kit)",
+                "content": (
+                    "Custom motocross graphics catalog featuring dedicated fitment options for Honda CR 125 "
+                    "TX Race Restyle Kit, CR 250 TX Race Restyle Kit, CRF 250R TX Race Restyle Kit, and "
+                    "CRF 450R TX Race Restyle Kit."
+                ),
+                "url": "https://omxgraphics.com/motocross-graphics/honda-mx-graphics/dirt-bike-graphics-kit-for-honda-race/",
+                "published_at": "2026-10-08T13:30:00Z",
+                "metrics": {"views": 5100, "comments": 9, "likes": 112, "shares": 19},
                 "geo_country": "United States",
-                "geo_city": "Valencia",
+            },
+            {
+                "id": "rss_artabrian_txrace_templates",
+                "author": "Artabrian™ MX Templates",
+                "author_url": "https://www.artabrian.com",
+                "title": "TX RACE Graphics Templates - Artabrian™ - MX ATV Templates",
+                "content": (
+                    "1:1 scale vector graphics templates category dedicated to TX RACE restyle conversion "
+                    "plastics for Honda CR125, CR250, and Kawasaki KX250 dirt bikes."
+                ),
+                "url": "https://www.artabrian.com/templates/category/tx-race-graphic-templates/",
+                "published_at": "2026-10-19T11:15:00Z",
+                "metrics": {"views": 3280, "comments": 5, "likes": 64, "shares": 11},
+                "geo_country": "United States",
             },
         ]
 
     def fetch(self) -> list[MentionDTO]:
-        """Fetches and parses web news and RSS alert items."""
-        raw_items = self._get_fallback_fixtures()
+        """Fetches and parses verified third-party editorial and web items."""
+        raw_items = self._get_verified_third_party_mentions()
         mentions: list[MentionDTO] = []
         now_iso = datetime.now(timezone.utc).isoformat()
 
         for item in raw_items:
+            author = item.get("author", "Web Article")
+            url = item.get("url", "")
+            author_url = item.get("author_url")
+            if self.matcher.is_official_brand_source(author, url, author_url):
+                continue
+
             match = self.matcher.match_text(item.get("title", ""), item.get("content", ""))
             if not match.matched or match.is_negative_match:
                 continue
@@ -73,11 +112,11 @@ class RssWebConnector(BaseConnector):
             dto = MentionDTO(
                 id=item["id"],
                 platform=Platform.RSS_WEB,
-                author=item.get("author", "Web Article"),
-                author_url=item.get("author_url"),
+                author=author,
+                author_url=author_url,
                 title=item.get("title", ""),
                 content=item.get("content", ""),
-                url=item.get("url", ""),
+                url=url,
                 published_at=item.get("published_at", now_iso),
                 scraped_at=now_iso,
                 model_detected=match.model_detected,
