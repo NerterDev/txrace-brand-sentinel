@@ -1,0 +1,109 @@
+version: "1.0"
+id: "TASK-001"
+title: "Bootstrap do Repositório, Topologia Canónica, MentionDTO e Dynamic Connector Registry"
+status: "closed"
+profile: "software"
+
+objective: >
+  Estabelecer a fundação do repositório Git, topologia canónica de diretórios,
+  modelo de dados imutável MentionDTO com autoridade estrita de esquema e validação,
+  e interface abstrata BaseConnector com carregador dinâmico de conectores (registry.py)
+  capaz de isolar exceções e emitir estados de integridade (OK, PARTIAL_DEGRADED, ERROR).
+
+source_of_truth:
+  model: "src/models/mention.py"
+  connectors: "src/connectors/base.py"
+  registry: "src/connectors/registry.py"
+
+data_trace:
+  ingress: "Payloads brutos recolhidos por conectores de dados (ou fixtures de teste)"
+  validation: "Validação tipada rigorosa em MentionDTO (campos obrigatórios, enums de intenção, sentimento, métricas >= 0, timestamps ISO 8601)"
+  state: "Instâncias imutáveis MentionDTO em memória com hash determinístico SHA-256"
+  egress: "Serialização limpa via to_dict() e from_dict() para JSON / SQLite"
+  root_cause: "Inicialização de infraestrutura sem antecessores; estabelecimento de contrato canónico de dados"
+
+strict_schema:
+  schema_authority: "src/models/mention.py"
+  declared_interfaces:
+    - name: "MentionDTO"
+      type: "dataclass"
+      fields:
+        - "id: str (SHA-256 único ou id externo)"
+        - "platform: str (youtube, tiktok, instagram, facebook, reddit, twitter, forums, marketplaces, rss_web)"
+        - "author: str"
+        - "author_url: str | None"
+        - "title: str"
+        - "content: str"
+        - "url: str"
+        - "published_at: str (ISO 8601)"
+        - "scraped_at: str (ISO 8601)"
+        - "model_detected: str (CR125, CR250, KX125, KX250, RM125, RM250, YZ125, YZ250, CRF250X, CRF450R, etc.)"
+        - "generation: str | None (Gen2, Gen24, Gen25)"
+        - "intent: str (COMPRA_ATIVA, VIRAL, PROJETO_BUILD, DUVIDA_TECNICA, GERAL)"
+        - "sentiment: str (POSITIVE, NEUTRAL, NEGATIVE)"
+        - "sentiment_score: float (0.0 a 1.0)"
+        - "priority_score: float (0.0 a 100.0)"
+        - "metrics: dict[str, int] (views, comments, likes, shares)"
+        - "geo_country: str | None"
+        - "geo_city: str | None"
+        - "raw_data: dict | None"
+    - name: "ConnectorStatus"
+      type: "Enum"
+      values: ["OK", "PARTIAL_DEGRADED", "ERROR"]
+    - name: "ConnectorResult"
+      type: "dataclass"
+      fields:
+        - "connector_name: str"
+        - "status: ConnectorStatus"
+        - "mentions: list[MentionDTO]"
+        - "error_message: str | None"
+        - "execution_time_ms: float"
+    - name: "BaseConnector"
+      type: "ABC"
+      methods:
+        - "fetch() -> list[MentionDTO]"
+        - "health_check() -> bool"
+    - name: "ConnectorRegistry"
+      type: "Class"
+      methods:
+        - "register(connector_class)"
+        - "get(name) -> BaseConnector"
+        - "run_all() -> list[ConnectorResult]"
+
+phantom_interface_prevention:
+  new_interfaces:
+    - "MentionDTO"
+    - "ConnectorStatus"
+    - "ConnectorResult"
+    - "BaseConnector"
+    - "ConnectorRegistry"
+  justification: "Componentes fundacionais mandatados pelo PROJECT.md e ARCHITECTURE.md para permitir a arquitetura de 10 conectores modulares."
+
+affected_files:
+  - ".gitignore"
+  - "config/settings.yaml"
+  - "config/sources.yaml"
+  - "config/keywords.yaml"
+  - "src/models/__init__.py"
+  - "src/models/mention.py"
+  - "src/connectors/__init__.py"
+  - "src/connectors/base.py"
+  - "src/connectors/registry.py"
+  - "tests/__init__.py"
+  - "tests/test_mention_dto.py"
+  - "tests/test_connectors.py"
+
+verification_plan:
+  type: "deterministic_unit_tests"
+  command: "python -m unittest discover -s tests -p 'test_*.py'"
+  evidence_required:
+    - "test_mention_dto passes (criação válida, serialização to_dict, parsing from_dict, rejeição de dados inválidos)"
+    - "test_connectors passes (registo dinâmico, execução com sucesso, isolamento gracioso de exceções como PARTIAL_DEGRADED)"
+
+done_when:
+  - "Repositório git inicializado com .gitignore canónico"
+  - "Topologia de diretórios criada"
+  - "MentionDTO implementado e testado com 100% de passagem"
+  - "BaseConnector e ConnectorRegistry implementados e testados com 100% de passagem"
+  - "Testes determinísticos passam sem erros via python -m unittest"
+

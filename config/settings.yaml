@@ -1,0 +1,30 @@
+# TX RACE Brand Sentinel — Core Settings
+app:
+  name: "TX RACE Brand Sentinel"
+  version: "1.0.0"
+  organization: "NerterDev"
+  environment: "production"
+
+storage:
+  output_dir: "dashboard/data"
+  mentions_filename: "current_mentions.json"
+  kpis_filename: "kpis.json"
+  analytics_filename: "analytics.json"
+  db_path: "data/sentinel_cache.sqlite"
+  rolling_window_days: 30
+
+engine:
+  max_mentions_per_run: 500
+  similarity_threshold: 0.85
+  priority_weights:
+    buying_intent: 40
+    viral_engagement: 30
+    sentiment_bonus: 15
+    freshness: 15
+
+rate_limiting:
+  default_delay_seconds: 1.5
+  max_retries: 3
+  backoff_factor: 2.0
+  timeout_seconds: 25
+

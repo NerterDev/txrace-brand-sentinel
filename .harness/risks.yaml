@@ -1,0 +1,28 @@
+version: 1
+risks:
+  - id: R001
+    description: "External platform rate limits or anti-bot blocks interrupting connector runs"
+    severity: "medium"
+    likelihood: "medium"
+    impact: "partial data omission for specific channels"
+    mitigation: "BaseConnector error isolation, PARTIAL_DEGRADED status reporting, exponential backoff with ddos_guard.py, and graceful fallback to RSS/search feeds"
+    validation_method: "Unit tests simulating 429 and network errors"
+    status: "mitigated_in_design"
+
+  - id: R002
+    description: "JSON data growth impacting GitHub Pages load time over long periods"
+    severity: "low"
+    likelihood: "medium"
+    impact: "Slower SPA boot time if current_mentions.json exceeds several megabytes"
+    mitigation: "Implement 30-day active rolling window export in json_exporter.py with optional archive indexing"
+    validation_method: "Data export size benchmark tests"
+    status: "mitigated_in_design"
+
+  - id: R003
+    description: "Accidental leak of API credentials in Git commits"
+    severity: "high"
+    likelihood: "low"
+    impact: "Compromised API keys"
+    mitigation: "Strict .gitignore rules for .env and secrets, and injection exclusively via GitHub Actions environment secrets"
+    validation_method: "Repository file audit and git status checks"
+    status: "mitigated_in_design"

@@ -1,0 +1,50 @@
+version: 1
+facts:
+  - id: F001
+    statement: "Project identity is TX RACE Brand Sentinel for organization NerterDev, governed by AI Harness Tier-S."
+  - id: F002
+    statement: "Architecture consists of a GitOps telemetry radar executed via GitHub Actions and visualized via a static Dark Theme Web SPA on GitHub Pages."
+  - id: F003
+    statement: "Core engine executes on Python 3.12 (environment currently running Python 3.12.3)."
+  - id: F004
+    statement: "Output data artifacts for the dashboard are current_mentions.json, kpis.json, and analytics.json."
+  - id: F005
+    statement: "The architecture plans 10 modular connectors loaded dynamically via registry.py and inheriting from BaseConnector."
+
+assumptions:
+  - id: A001
+    statement: "GitHub Actions runner will provide API tokens (YouTube API, etc.) via GitHub repository secrets."
+    confidence: high
+    source: "PROJECT.md and ARCHITECTURE.md"
+    validated: false
+    requires_confirmation: true
+  - id: A002
+    statement: "Sources without public APIs will utilize structured RSS, public search feeds, or scraping with polite backoff."
+    confidence: medium
+    source: "ARCHITECTURE.md"
+    validated: false
+    requires_confirmation: true
+  - id: A003
+    statement: "Offline deterministic tests will validate data models, matching engine, deduplication, and UI state contracts without live network calls."
+    confidence: high
+    source: "verification.yaml and ux_contract.yaml"
+    validated: true
+    requires_confirmation: false
+
+hypotheses:
+  - id: H001
+    statement: "A vanilla HTML/CSS/JS SPA with native SVG charts will provide sub-second load times and zero-dependency maintenance."
+    confidence: high
+  - id: H002
+    statement: "SQLite hash deduplication will prevent re-processing identical mentions across 4-hour cron runs."
+    confidence: high
+
+unknowns:
+  - id: U001
+    statement: "Which external API keys are already available vs require developer registration?"
+  - id: U002
+    statement: "Rate limit thresholds for forum and marketplace feeds during automated runner executions."
+
+open_questions:
+  - id: Q001
+    statement: "Should historical mentions beyond 30-60 days be archived in a separate JSON file to keep current_mentions.json lean?"

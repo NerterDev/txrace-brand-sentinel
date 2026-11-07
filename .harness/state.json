@@ -1,0 +1,110 @@
+{
+  "harness_version": "6.4",
+  "project_name": "TX RACE Brand Sentinel",
+  "architecture_status": "proposed",
+  "human_approved": false,
+  "challenge_status": "pending",
+  "continuous_mode": true,
+  "active_task": null,
+  "closed_tasks": [
+    "TASK-001"
+  ],
+  "facts": [
+    "F001",
+    "F002",
+    "F003",
+    "F004",
+    "F005"
+  ],
+  "assumptions": [
+    "A001",
+    "A002",
+    "A003"
+  ],
+  "hypotheses": [
+    "H001",
+    "H002"
+  ],
+  "unknowns": [
+    "U001",
+    "U002"
+  ],
+  "open_questions": [
+    "Q001"
+  ],
+  "risks": [
+    "R001",
+    "R002",
+    "R003"
+  ],
+  "decisions": [
+    "D001",
+    "D002",
+    "D003",
+    "D004",
+    "D005",
+    "D006",
+    "D007",
+    "D008",
+    "D009",
+    "D010",
+    "D013",
+    "D014",
+    "D015",
+    "D016",
+    "D017",
+    "D018",
+    "D019",
+    "D020",
+    "D021",
+    "D022",
+    "D023",
+    "D024",
+    "D025",
+    "D026",
+    "D027",
+    "D028",
+    "D029",
+    "D030",
+    "D031",
+    "D032",
+    "D033",
+    "D034",
+    "D035",
+    "D036",
+    "D037",
+    "D038",
+    "D039",
+    "D040",
+    "D041",
+    "D042",
+    "D043"
+  ],
+  "learning": {
+    "updated_at": "2026-11-07T01:36:00+01:00",
+    "lessons": 0,
+    "pass_rate_pct": 100.0,
+    "active_failures": {}
+  },
+  "improvement_status": "none",
+  "last_test": "tests/ (15 passed: MentionDTO validation, immutability, roundtrip, score bounds, auto-viral, BaseConnector, timeout partial degradation, crash isolation, ConnectorRegistry orchestration)",
+  "last_action": {
+    "action": "task_001_closed",
+    "task": "TASK-001",
+    "at": "2026-11-07T01:36:00+01:00"
+  },
+  "resume_hud": {
+    "project": "TX RACE Brand Sentinel",
+    "profile": "software",
+    "active_task": "TASK-001 Concluída e Selada",
+    "last_decision": "D043: Bootstrap Canonico, MentionDTO e Dynamic Connector Registry",
+    "next_step": "Planear TASK-002 (/harness-plan TASK-002): Implementação do Motor de Keywords (matcher.py), filtros negativos e deduplicador SQLite."
+  },
+  "verification_layer": "effect-runtime",
+  "last_snapshot": {
+    "id": "snap_task001_closed",
+    "at": "2026-11-07T01:36:00+01:00",
+    "label": "TASK-001 closed with receipt-TASK-001.json sealed",
+    "total_files": 58
+  }
+}

@@ -1,0 +1,10 @@
+version: "1.0"
+authorities:
+  - name: "MentionDTO"
+    type: "dataclass"
+    source: "src/models/mention.py"
+    scope: "brand_mentions"
+  - name: "ConnectorResult"
+    type: "dataclass"
+    source: "src/connectors/base.py"
+    scope: "connector_telemetry"

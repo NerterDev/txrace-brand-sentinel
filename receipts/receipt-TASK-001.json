@@ -1,0 +1,68 @@
+{
+  "task_id": "TASK-001",
+  "title": "Bootstrap do Repositório, Topologia Canónica, MentionDTO e Dynamic Connector Registry",
+  "status": "closed",
+  "sealed": true,
+  "completed_at": "2026-11-07T01:28:00+01:00",
+  "verifier": "Harness Verification Engine",
+  "evidence": {
+    "git": {
+      "status": "initialized",
+      "gitignore": "canonical .gitignore created covering caches, .env, sqlite, and temp files"
+    },
+    "configuration": {
+      "settings_yaml": "valid (4 sections: app, storage, engine, rate_limiting)",
+      "sources_yaml": "valid (9 connectors defined with modules, rate limits, and auth flags)",
+      "keywords_yaml": "valid (Honda, Kawasaki, Suzuki, Yamaha models, Gen2/Gen24/Gen25, intents, and negative filters)"
+    },
+    "data_model": {
+      "class": "MentionDTO",
+      "source": "src/models/mention.py",
+      "validation": "strict immutable frozen dataclass, score bounds clipping, auto-viral threshold at 10,000 views",
+      "hashing": "SHA-256 deterministic hex digest via MentionDTO.generate_id",
+      "serialization": "to_dict() and from_dict() verified lossless roundtrip"
+    },
+    "connectors": {
+      "base_class": "BaseConnector",
+      "source": "src/connectors/base.py",
+      "fault_tolerance": "TimeoutError -> PARTIAL_DEGRADED, Exception -> ERROR, telemetry tracking latency in ms"
+    },
+    "registry": {
+      "class": "ConnectorRegistry",
+      "source": "src/connectors/registry.py",
+      "dynamic_loading": "verified via load_from_config(sources_yaml)",
+      "fault_isolation": "verified sequentially isolating crashed connectors"
+    },
+    "tests": {
+      "runner": "python -m unittest discover -s tests -p 'test_*.py'",
+      "tests_run": 15,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 0.004
+    }
+  },
+  "affected_files": [
+    ".gitignore",
+    "config/settings.yaml",
+    "config/sources.yaml",
+    "config/keywords.yaml",
+    "src/__init__.py",
+    "src/models/__init__.py",
+    "src/models/mention.py",
+    "src/connectors/__init__.py",
+    "src/connectors/base.py",
+    "src/connectors/registry.py",
+    "src/engine/__init__.py",
+    "src/dispatchers/__init__.py",
+    "dashboard/data/.gitkeep",
+    "tests/__init__.py",
+    "tests/test_mention_dto.py",
+    "tests/test_connectors.py",
+    "tasks/TASK-001.yaml",
+    "DECISIONS.md",
+    ".harness/source_of_truth.yaml",
+    ".harness/schema.yaml",
+    ".harness/state.json"
+  ]
+}
+

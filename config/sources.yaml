@@ -1,0 +1,86 @@
+# TX RACE Brand Sentinel — Data Sources Catalog
+sources:
+  youtube:
+    enabled: true
+    name: "YouTube Data API v3 & Shorts"
+    module: "src.connectors.youtube"
+    class_name: "YouTubeConnector"
+    rate_limit_per_min: 30
+    requires_auth: true
+    auth_env_key: "YOUTUBE_API_KEY"
+
+  tiktok:
+    enabled: true
+    name: "TikTok Viral Monitor"
+    module: "src.connectors.tiktok"
+    class_name: "TikTokConnector"
+    rate_limit_per_min: 20
+    requires_auth: false
+
+  instagram:
+    enabled: true
+    name: "Instagram Hashtag & Account Tracker"
+    module: "src.connectors.instagram"
+    class_name: "InstagramConnector"
+    rate_limit_per_min: 15
+    requires_auth: true
+    auth_env_key: "INSTAGRAM_ACCESS_TOKEN"
+
+  facebook:
+    enabled: true
+    name: "Facebook Public Groups & Marketplace"
+    module: "src.connectors.facebook"
+    class_name: "FacebookConnector"
+    rate_limit_per_min: 15
+    requires_auth: false
+
+  reddit:
+    enabled: true
+    name: "Reddit PRAW & Dirtbike Communities"
+    module: "src.connectors.reddit"
+    class_name: "RedditConnector"
+    subreddits: ["Dirtbikes", "Motocross", "supercross", "Dualsport"]
+    rate_limit_per_min: 60
+    requires_auth: true
+    auth_env_key: "REDDIT_CLIENT_ID"
+
+  twitter:
+    enabled: true
+    name: "X / Twitter & Nitter RSS"
+    module: "src.connectors.twitter"
+    class_name: "TwitterConnector"
+    rate_limit_per_min: 30
+    requires_auth: false
+
+  forums:
+    enabled: true
+    name: "Specialized MX Forums"
+    module: "src.connectors.forums"
+    class_name: "ForumsConnector"
+    forums:
+      - name: "ThumperTalk"
+        url: "https://www.thumpertalk.com"
+      - name: "VitalMX"
+        url: "https://www.vitalmx.com"
+      - name: "DirtRider"
+        url: "https://www.dirtrider.com"
+    rate_limit_per_min: 20
+    requires_auth: false
+
+  marketplaces:
+    enabled: true
+    name: "Pre-Owned Parts & Bike Marketplaces"
+    module: "src.connectors.marketplaces"
+    class_name: "MarketplacesConnector"
+    platforms: ["eBay Motors", "Wallapop", "Leboncoin", "Craigslist"]
+    rate_limit_per_min: 20
+    requires_auth: false
+
+  rss_web:
+    enabled: true
+    name: "Google Alerts RSS & Bing News"
+    module: "src.connectors.rss_web"
+    class_name: "RssWebConnector"
+    rate_limit_per_min: 40
+    requires_auth: false
+

@@ -1,0 +1,11 @@
+version: "1.0"
+authorities:
+  - kind: "data_model"
+    source: "src/models/mention.py"
+    description: "Authoritative schema for MentionDTO (structured social and competitor brand mention)"
+  - kind: "connector_lifecycle"
+    source: "src/connectors/base.py"
+    description: "Authoritative lifecycle and status contract for brand intelligence connectors"
+  - kind: "connector_registry"
+    source: "src/connectors/registry.py"
+    description: "Authoritative dynamic loader and executor for registered connectors"

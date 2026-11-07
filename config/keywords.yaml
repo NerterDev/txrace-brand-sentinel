@@ -1,0 +1,131 @@
+# TX RACE Brand Sentinel — Keyword and Intent Mapping
+brand_queries:
+  primary:
+    - "txrace"
+    - "tx race"
+    - "tx-race"
+    - "txrace kit"
+    - "tx race restyle"
+    - "txrace restyle"
+    - "kit tx race"
+    - "kit txrace"
+
+models:
+  honda:
+    brand: "Honda"
+    color: "#DC2626"
+    targets:
+      - id: "CR125"
+        aliases: ["cr 125", "cr125r", "cr 125r"]
+      - id: "CR250"
+        aliases: ["cr 250", "cr250r", "cr 250r"]
+      - id: "CR500"
+        aliases: ["cr 500", "cr500r"]
+      - id: "CRF250X"
+        aliases: ["crf 250x", "crf250 x"]
+      - id: "CRF450R"
+        aliases: ["crf 450r", "crf450 r"]
+  kawasaki:
+    brand: "Kawasaki"
+    color: "#16A34A"
+    targets:
+      - id: "KX125"
+        aliases: ["kx 125", "kx125 2-stroke"]
+      - id: "KX250"
+        aliases: ["kx 250", "kx250 2-stroke"]
+  suzuki:
+    brand: "Suzuki"
+    color: "#EAB308"
+    targets:
+      - id: "RM125"
+        aliases: ["rm 125", "rm125 2-stroke"]
+      - id: "RM250"
+        aliases: ["rm 250", "rm250 2-stroke"]
+  yamaha:
+    brand: "Yamaha"
+    color: "#2563EB"
+    targets:
+      - id: "YZ125"
+        aliases: ["yz 125", "yz125 restyle"]
+      - id: "YZ250"
+        aliases: ["yz 250", "yz250 restyle"]
+
+generations:
+  - id: "Gen25"
+    aliases: ["gen 25", "gen-25", "2025 style", "newest kit"]
+  - id: "Gen24"
+    aliases: ["gen 24", "gen-24", "2024 style"]
+  - id: "Gen2"
+    aliases: ["gen 2", "gen-2", "generation 2"]
+
+intents:
+  COMPRA_ATIVA:
+    keywords:
+      - "where to buy"
+      - "where can i buy"
+      - "onde comprar"
+      - "donde comprar"
+      - "où acheter"
+      - "how much"
+      - "how much is it"
+      - "price"
+      - "preço"
+      - "preco"
+      - "precio"
+      - "prix"
+      - "shipping"
+      - "in stock"
+      - "stock"
+      - "discount code"
+      - "cupom"
+      - "order link"
+      - "distributor"
+      - "dealer"
+      - "want to buy"
+      - "quero comprar"
+  PROJETO_BUILD:
+    keywords:
+      - "transformation"
+      - "transformacao"
+      - "rebuild"
+      - "restoration"
+      - "restyle"
+      - "build"
+      - "project bike"
+      - "before and after"
+      - "antes e depois"
+      - "antes y despues"
+      - "restyled"
+      - "conversion"
+  DUVIDA_TECNICA:
+    keywords:
+      - "fitment"
+      - "seat foam"
+      - "seat"
+      - "assento"
+      - "asiento"
+      - "subframe"
+      - "airbox"
+      - "gas tank"
+      - "tank"
+      - "brackets"
+      - "montagem"
+      - "compatibilidade"
+      - "compatibility"
+      - "how to install"
+      - "instalação"
+      - "instalacion"
+      - "graphics template"
+
+negative_filters:
+  - "tx racing games"
+  - "texas race track"
+  - "texas motor speedway"
+  - "tx 500 race"
+  - "nascar tx race"
+  - "rc car tx race"
+  - "running tx race"
+  - "marathon tx race"
+  - "f1 texas race"
+  - "indycar texas"
+
