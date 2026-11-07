@@ -8,7 +8,8 @@
   "active_task": null,
   "closed_tasks": [
     "TASK-001",
-    "TASK-002"
+    "TASK-002",
+    "TASK-003"
   ],
   "facts": [
     "F001",
@@ -80,33 +81,34 @@
     "D041",
     "D042",
     "D043",
-    "D044"
+    "D044",
+    "D045"
   ],
   "learning": {
-    "updated_at": "2026-11-07T02:31:00+01:00",
+    "updated_at": "2026-11-07T02:47:00+01:00",
     "lessons": 0,
     "pass_rate_pct": 100.0,
     "active_failures": {}
   },
   "improvement_status": "none",
-  "last_test": "tests/ (33 passed: matcher, prioritizer, deduplicator, ddos_guard, connectors, mention_dto, and full boundary integration)",
+  "last_test": "tests/ (41 passed: YouTube, TikTok, Instagram, Facebook, Reddit, connectors registry, dynamic config loading, and engine integration)",
   "last_action": {
-    "action": "task_002_closed",
-    "task": "TASK-002",
-    "at": "2026-11-07T02:31:00+01:00"
+    "action": "task_003_closed",
+    "task": "TASK-003",
+    "at": "2026-11-07T02:47:00+01:00"
   },
   "resume_hud": {
     "project": "TX RACE Brand Sentinel",
     "profile": "software",
-    "active_task": "TASK-002 Concluída e Selada",
-    "last_decision": "D044: Motor Semantico de Keywords, Deduplicacao SQLite e Resiliencia DDoS Guard",
-    "next_step": "Planear TASK-003 (/harness-plan TASK-003): Conectores de Vídeo e Redes (YouTube v3, TikTok, Instagram, Reddit PRAW, Facebook Groups)."
+    "active_task": "TASK-003 Concluída e Selada",
+    "last_decision": "D045: Conectores de Video e Redes Sociais",
+    "next_step": "Planear TASK-004 (/harness-plan TASK-004): Conectores de Fóruns (ThumperTalk, VitalMX, RSS) e Marketplaces (eBay, Wallapop)."
   },
   "verification_layer": "effect-runtime",
   "last_snapshot": {
-    "id": "snap_task002_closed",
-    "at": "2026-11-07T02:31:00+01:00",
-    "label": "TASK-002 closed with receipt-TASK-002.json sealed",
-    "total_files": 70
+    "id": "snap_task003_closed",
+    "at": "2026-11-07T02:47:00+01:00",
+    "label": "TASK-003 closed with receipt-TASK-003.json sealed",
+    "total_files": 81
   }
 }

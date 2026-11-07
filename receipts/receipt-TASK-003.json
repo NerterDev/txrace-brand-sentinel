@@ -1,0 +1,70 @@
+{
+  "task_id": "TASK-003",
+  "title": "Conectores de Vídeo e Redes Sociais (YouTube v3, TikTok, Instagram, Reddit e Facebook)",
+  "status": "closed",
+  "sealed": true,
+  "completed_at": "2026-11-07T02:46:00+01:00",
+  "verifier": "Harness Verification Engine",
+  "evidence": {
+    "connectors": {
+      "youtube": {
+        "class": "YouTubeConnector",
+        "source": "src/connectors/youtube.py",
+        "platform": "youtube",
+        "features": "API v3 + Shorts, video metrics (views, comments, likes, shares), viral detection"
+      },
+      "tiktok": {
+        "class": "TikTokConnector",
+        "source": "src/connectors/tiktok.py",
+        "platform": "tiktok",
+        "features": "Short-form video transformation monitoring, #txrace hashtags, virality threshold"
+      },
+      "instagram": {
+        "class": "InstagramConnector",
+        "source": "src/connectors/instagram.py",
+        "platform": "instagram",
+        "features": "Hashtag and account mention tracking (@txrace), caption parsing, bike model matching"
+      },
+      "facebook": {
+        "class": "FacebookConnector",
+        "source": "src/connectors/facebook.py",
+        "platform": "facebook",
+        "features": "Public motocross enthusiast groups and marketplace discussions"
+      },
+      "reddit": {
+        "class": "RedditConnector",
+        "source": "src/connectors/reddit.py",
+        "platform": "reddit",
+        "features": "r/Dirtbikes, r/Motocross, r/supercross, r/Dualsport thread tracking and upvote extraction"
+      }
+    },
+    "dynamic_discovery": {
+      "status": "verified",
+      "config_file": "config/sources.yaml",
+      "loaded_connectors": ["youtube", "tiktok", "instagram", "facebook", "reddit"],
+      "total_mentions_gathered": 11
+    },
+    "tests": {
+      "runner": "python -m unittest discover -s tests -p 'test_*.py'",
+      "total_tests": 41,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 0.125
+    }
+  },
+  "affected_files": [
+    "src/connectors/youtube.py",
+    "src/connectors/tiktok.py",
+    "src/connectors/instagram.py",
+    "src/connectors/facebook.py",
+    "src/connectors/reddit.py",
+    "src/connectors/__init__.py",
+    "tests/test_youtube_connector.py",
+    "tests/test_social_connectors.py",
+    "tasks/TASK-003.yaml",
+    "DECISIONS.md",
+    ".harness/source_of_truth.yaml",
+    ".harness/state.json"
+  ]
+}
+

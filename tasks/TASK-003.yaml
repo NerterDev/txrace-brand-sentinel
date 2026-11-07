@@ -1,0 +1,84 @@
+version: "1.0"
+id: "TASK-003"
+title: "Conectores de Vídeo e Redes Sociais (YouTube v3, TikTok, Instagram, Reddit e Facebook)"
+status: "closed"
+profile: "software"
+
+objective: >
+  Implementar os 5 conectores de vídeo e redes sociais mandatórios:
+  1. YouTubeConnector (src/connectors/youtube.py): recolha de vídeos e shorts via YouTube Data API v3 com suporte a fallback de pesquisa e métricas (views, likes, comments).
+  2. TikTokConnector (src/connectors/tiktok.py): monitorização de transformações virais de motos e hashtags (#txrace, #restyle).
+  3. InstagramConnector (src/connectors/instagram.py): rastreio de publicações, tags e menções a @txrace.
+  4. FacebookConnector (src/connectors/facebook.py): recolha de menções em grupos públicos de motocross e marketplace.
+  5. RedditConnector (src/connectors/reddit.py): pesquisa em subreddits especializados (r/Dirtbikes, r/Motocross, r/supercross) com parsing de endpoints públicos/PRAW.
+  Todos os conectores devem herdar de BaseConnector, integrar-se com KeywordMatcher e Prioritizer, e suportar modo offline/fixtures resiliente para execução determinística em CI/CD sem chaves secretas.
+
+source_of_truth:
+  sources_config: "config/sources.yaml"
+  youtube_connector: "src/connectors/youtube.py"
+  tiktok_connector: "src/connectors/tiktok.py"
+  instagram_connector: "src/connectors/instagram.py"
+  facebook_connector: "src/connectors/facebook.py"
+  reddit_connector: "src/connectors/reddit.py"
+  registry: "src/connectors/registry.py"
+
+data_trace:
+  ingress: "Respostas HTTP/JSON de APIs externas ou fixtures de payload das respetivas plataformas"
+  validation: "Normalização de campos de autor, título, url, métricas de engajamento e verificação semântica via KeywordMatcher"
+  state: "Criação de MentionDTOs imutáveis com id determinístico SHA-256 e priority_score pré-calculado"
+  egress: "ConnectorResult com status OK ou PARTIAL_DEGRADED e lista de MentionDTOs válidos"
+  root_cause: "Necessidade de monitorização ativa das 5 maiores redes sociais onde a comunidade de motocross partilha transformações e coloca dúvidas de compra"
+
+strict_schema:
+  schema_authority: "src/models/mention.py"
+  declared_interfaces:
+    - name: "YouTubeConnector"
+      type: "BaseConnector"
+      methods: ["fetch() -> list[MentionDTO]", "health_check() -> bool"]
+    - name: "TikTokConnector"
+      type: "BaseConnector"
+      methods: ["fetch() -> list[MentionDTO]", "health_check() -> bool"]
+    - name: "InstagramConnector"
+      type: "BaseConnector"
+      methods: ["fetch() -> list[MentionDTO]", "health_check() -> bool"]
+    - name: "FacebookConnector"
+      type: "BaseConnector"
+      methods: ["fetch() -> list[MentionDTO]", "health_check() -> bool"]
+    - name: "RedditConnector"
+      type: "BaseConnector"
+      methods: ["fetch() -> list[MentionDTO]", "health_check() -> bool"]
+
+phantom_interface_prevention:
+  new_interfaces:
+    - "YouTubeConnector"
+    - "TikTokConnector"
+    - "InstagramConnector"
+    - "FacebookConnector"
+    - "RedditConnector"
+  justification: "Conectores modulares planeados na arquitetura e registados no catálogo config/sources.yaml."
+
+affected_files:
+  - "src/connectors/youtube.py"
+  - "src/connectors/tiktok.py"
+  - "src/connectors/instagram.py"
+  - "src/connectors/facebook.py"
+  - "src/connectors/reddit.py"
+  - "src/connectors/__init__.py"
+  - "tests/test_youtube_connector.py"
+  - "tests/test_social_connectors.py"
+  - ".harness/source_of_truth.yaml"
+  - ".harness/state.json"
+
+verification_plan:
+  type: "deterministic_unit_tests"
+  command: "python -m unittest discover -s tests -p 'test_*.py'"
+  evidence_required:
+    - "test_youtube_connector passes: parsing de vídeos e shorts, extração de métricas e suporte a mock/api"
+    - "test_social_connectors passes: execução dos 4 conectores de redes sociais (TikTok, Instagram, Facebook, Reddit) retornando MentionDTOs válidos e compatibilidade com ConnectorRegistry.load_from_config()"
+
+done_when:
+  - "Os 5 conectores estão implementados em src/connectors/"
+  - "ConnectorRegistry carrega dinamicamente os 5 conectores de config/sources.yaml"
+  - "Cada conector produz MentionDTOs enriquecidos com modelos de moto, intenções e respostas recomendadas"
+  - "100% dos testes determinísticos passam via python -m unittest"
+

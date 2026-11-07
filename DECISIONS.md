@@ -860,3 +860,23 @@ No architecture decision is considered final until explicitly approved by the hu
 - **Unresolved uncertainty:** Nenhuma.
 - **Human approval:** Pending human review.
 
+### D045: Conectores de Vídeo e Redes Sociais (TASK-003)
+- **Context:**
+  1. Necessidade de monitorização ativa dos 5 maiores canais de vídeo e redes sociais: YouTube (v3/Shorts), TikTok, Instagram, Facebook (Grupos) e Reddit.
+  2. Necessidade de resiliência e determinismo em ambientes CI/CD e testes locais sem exigir injeção mandatória de chaves de API pagas ou credenciais em dev.
+- **Decision:**
+  1. Implementado `YouTubeConnector` em `src/connectors/youtube.py` para vídeos e Shorts com métricas completas de engajamento (views, likes, comments, shares) e integração com API v3.
+  2. Implementado `TikTokConnector` em `src/connectors/tiktok.py` monitorizando transformações virais de motos.
+  3. Implementado `InstagramConnector` em `src/connectors/instagram.py` monitorizando tags (#txrace, #restyle) e menções.
+  4. Implementado `FacebookConnector` em `src/connectors/facebook.py` cobrindo grupos comunitários públicos de motocross e discussões de montagem/marketplace.
+  5. Implementado `RedditConnector` em `src/connectors/reddit.py` monitorizando subreddits especializados (r/Dirtbikes, r/Motocross, etc.).
+  6. Todos os conectores herdam de `BaseConnector`, usam `KeywordMatcher` e `Prioritizer` para enriquecer `MentionDTO` e suportam fixtures realistas de fallback para 100% de determinismo offline.
+- **Alternatives considered:**
+  1. Bloquear execução se faltarem API keys de redes proprietárias. (Rejeitado: causaria falha na pipeline de CI do GitHub Pages e nos testes locais; arquitetura resiliente degrada suavemente).
+- **Evidence / Reasoning:**
+  - 41/41 testes unitários determinísticos aprovados com 100% de sucesso em 0.126s.
+  - Carregamento dinâmico via `ConnectorRegistry.load_from_config(sources_yaml)` comprovado.
+- **Unresolved uncertainty:** Nenhuma.
+- **Human approval:** Pending human review.
+
+
